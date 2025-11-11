@@ -131,34 +131,34 @@ function TimelineCardContent({ item }: { item: TimelineItem }) {
   return (
     <>
       {/* Date badge */}
-      <div className="inline-flex items-center gap-2 rounded-full border border-border/50 bg-card/50 px-3 py-1 text-xs font-semibold text-muted-foreground mb-3">
-        <Calendar className="h-3 w-3" />
+      <div className="inline-flex items-center gap-1.5 md:gap-2 rounded-full border border-border/50 bg-card/50 px-2 md:px-3 py-0.5 md:py-1 text-xs font-semibold text-muted-foreground mb-2 md:mb-3">
+        <Calendar className="h-2.5 w-2.5 md:h-3 md:w-3" />
         <span>{item.date}</span>
       </div>
 
       {/* Header */}
-      <div className="mb-3">
-        <div className="flex items-start gap-3 mb-2">
-          <div className={`rounded-lg bg-card/50 p-2 ${item.iconColor} flex-shrink-0`}>
-            <item.icon className="h-5 w-5" />
+      <div className="mb-2 md:mb-3">
+        <div className="flex items-start gap-2 md:gap-3 mb-1.5 md:mb-2">
+          <div className={`rounded-lg bg-card/50 p-1.5 md:p-2 ${item.iconColor} flex-shrink-0`}>
+            <item.icon className="h-4 w-4 md:h-5 md:w-5" />
           </div>
           <div className="flex-1">
-            <h3 className="text-xl md:text-2xl font-bold mb-1">{item.title}</h3>
-            <p className="text-sm font-medium text-muted-foreground">{item.subtitle}</p>
+            <h3 className="text-base md:text-xl lg:text-2xl font-bold mb-0.5 md:mb-1">{item.title}</h3>
+            <p className="text-xs md:text-sm font-medium text-muted-foreground">{item.subtitle}</p>
           </div>
         </div>
       </div>
 
       {/* Description */}
-      <p className="text-muted-foreground mb-4 text-sm md:text-base leading-relaxed">
+      <p className="text-muted-foreground mb-3 md:mb-4 text-xs md:text-sm lg:text-base leading-relaxed">
         {item.description}
       </p>
 
       {/* Details list */}
-      <div className="space-y-2">
+      <div className="space-y-1.5 md:space-y-2">
         {item.details.map((detail, detailIndex) => (
-          <div key={detailIndex} className="flex items-start gap-2.5 text-sm">
-            <ChevronRight className="h-4 w-4 mt-0.5 flex-shrink-0 text-primary" />
+          <div key={detailIndex} className="flex items-start gap-2 md:gap-2.5 text-xs md:text-sm">
+            <ChevronRight className="h-3 w-3 md:h-4 md:w-4 mt-0.5 flex-shrink-0 text-primary" />
             <span className="text-muted-foreground">{detail}</span>
           </div>
         ))}
@@ -166,13 +166,13 @@ function TimelineCardContent({ item }: { item: TimelineItem }) {
 
       {/* SRS Template Download Link for Ideathon Phase */}
       {item.title === "Ideathon Phase" && (
-        <div className="mt-4 pt-4 border-t border-white/10">
+        <div className="mt-3 md:mt-4 pt-3 md:pt-4 border-t border-white/10">
           <a
             href="/custom_srs_template.doc"
             download="custom_srs_template.doc"
-            className="inline-flex items-center gap-2 text-sm text-blue-400 hover:text-blue-300 transition-colors underline"
+            className="inline-flex items-center gap-1.5 md:gap-2 text-xs md:text-sm text-blue-400 hover:text-blue-300 transition-colors underline"
           >
-            <Download className="h-4 w-4" />
+            <Download className="h-3 w-3 md:h-4 md:w-4" />
             <span>Download SRS Template</span>
           </a>
         </div>
@@ -226,7 +226,7 @@ function TimelineComponent({ timeline: timelineItems }: { timeline: TimelineItem
         />
       </div>
 
-      <div className="space-y-10 md:space-y-12">
+      <div className="space-y-6 md:space-y-12">
         {timelineItems.map((item, index) => {
           const isEven = index % 2 === 0
           const dotColor = index === 0 ? 'bg-blue-500' :
@@ -242,7 +242,7 @@ function TimelineComponent({ timeline: timelineItems }: { timeline: TimelineItem
           return (
             <div
               key={index}
-              className="relative flex items-center gap-6 md:gap-8"
+              className="relative flex items-center gap-4 md:gap-8"
             >
               {/* Desktop Layout: Even items have card on left, odd items have card on right */}
               {/* Mobile Layout: Card centered */}
@@ -273,7 +273,7 @@ function TimelineComponent({ timeline: timelineItems }: { timeline: TimelineItem
 
               {/* Mobile: Card always centered */}
               <div className="flex-1 md:hidden">
-                <div className={`rounded-xl border-2 border-white/50 bg-white/10 backdrop-blur-md p-5 shadow-xl hover:shadow-2xl transition-shadow`}>
+                <div className={`rounded-xl border-2 border-white/50 bg-white/10 backdrop-blur-md p-3 md:p-5 shadow-xl hover:shadow-2xl transition-shadow`}>
                   <TimelineCardContent item={item} />
                 </div>
               </div>
@@ -319,6 +319,8 @@ export default function Fantastic4Page() {
   const [isScrolledPastHero, setIsScrolledPastHero] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
+  const [activeOverviewCard, setActiveOverviewCard] = useState(0)
+  const [activeWhyParticipateCard, setActiveWhyParticipateCard] = useState(0)
 
   // Countdown timer for Hackathon (opens on 15th November 2025)
   useEffect(() => {
@@ -730,101 +732,270 @@ export default function Fantastic4Page() {
       <section id="overview" className="relative border-y border-border/50 bg-transparent h-screen flex items-center justify-center overflow-hidden z-10 pointer-events-none">
         {/* Brighter sky blue background effect for event overview section - Safari compatible */}
         <div className="absolute inset-0 bg-sky-400/30 blur-3xl opacity-70 pointer-events-none z-0" style={{ backgroundColor: 'rgba(56, 189, 248, 0.3)' }}></div>
-        <div className="relative mx-auto max-w-7xl px-4 md:px-6 pointer-events-auto z-10 w-full h-full flex flex-col justify-center py-8 md:py-0">
-          <div className="mb-4 md:mb-8 text-center">
-            <h2 className="mb-3 md:mb-6 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+        <div className="relative mx-auto max-w-7xl px-4 md:px-6 pointer-events-auto z-10 w-full md:h-full md:flex md:flex-col md:justify-center py-4 md:py-0">
+          <div className="mb-4 md:mb-12 text-center pt-4 md:pt-12">
+            <h2 className="mb-3 md:mb-8 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
               Event Overview
             </h2>
           </div>
 
-          <div className="grid gap-3 md:gap-6 md:grid-cols-2 mb-4 md:mb-8 overflow-y-auto flex-1 min-h-0">
-            {/* Purpose and Description */}
-            <Card className="border-2 border-white/50 bg-white/10 backdrop-blur-md p-3 md:p-6">
-              <CardHeader className="pb-2 md:pb-3">
-                <div className="flex items-center gap-2 md:gap-3 mb-2 md:mb-3">
-                  <Target className="h-5 w-5 md:h-8 md:w-8 text-blue-400 flex-shrink-0" />
-                  <CardTitle className="text-lg md:text-2xl">Purpose</CardTitle>
+          <div className="mb-6 md:mb-12 md:overflow-y-auto md:flex-1 md:min-h-0">
+            {/* Mobile: Single card view with carousel */}
+            <div className="md:hidden">
+              <div className="relative">
+                {/* Purpose Card */}
+                <div className={`transition-opacity duration-300 ${activeOverviewCard === 0 ? 'opacity-100 block' : 'opacity-0 hidden'}`}>
+                  <Card className="border-2 border-white/50 bg-white/10 backdrop-blur-md p-3">
+                    <CardHeader className="pb-2">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Target className="h-5 w-5 text-blue-400 flex-shrink-0" />
+                        <CardTitle className="text-lg">Purpose</CardTitle>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-xs text-muted-foreground leading-relaxed mb-2">
+                        Fantastic 4 is designed to foster innovation, creativity, and technical excellence among students. 
+                        The event aims to bridge the gap between ideation and implementation, encouraging participants to 
+                        think critically, solve real-world problems, and build impactful solutions.
+                      </p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">
+                        The mission of this event is to provide students with a structured opportunity to transform their 
+                        innovative ideas into working prototypes, collaborate with peers, learn from industry experts, and 
+                        showcase their technical skills in a competitive yet supportive environment.
+                      </p>
+                    </CardContent>
+                  </Card>
                 </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-xs md:text-base text-muted-foreground leading-relaxed mb-2 md:mb-3">
-                  Fantastic 4 is designed to foster innovation, creativity, and technical excellence among students. 
-                  The event aims to bridge the gap between ideation and implementation, encouraging participants to 
-                  think critically, solve real-world problems, and build impactful solutions.
-                </p>
-                <p className="text-xs md:text-base text-muted-foreground leading-relaxed">
-                  The mission of this event is to provide students with a structured opportunity to transform their 
-                  innovative ideas into working prototypes, collaborate with peers, learn from industry experts, and 
-                  showcase their technical skills in a competitive yet supportive environment.
-                </p>
-              </CardContent>
-            </Card>
 
-            {/* Event Structure */}
-            <Card className="border-2 border-white/50 bg-white/10 backdrop-blur-md p-3 md:p-6">
-              <CardHeader className="pb-2 md:pb-3">
-                <div className="flex items-center gap-2 md:gap-3 mb-2 md:mb-3">
-                  <Calendar className="h-5 w-5 md:h-8 md:w-8 text-purple-400 flex-shrink-0" />
-                  <CardTitle className="text-lg md:text-2xl">Event Structure</CardTitle>
+                {/* Event Structure Card */}
+                <div className={`transition-opacity duration-300 ${activeOverviewCard === 1 ? 'opacity-100 block' : 'opacity-0 hidden'}`}>
+                  <Card className="border-2 border-white/50 bg-white/10 backdrop-blur-md p-3">
+                    <CardHeader className="pb-2">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Calendar className="h-5 w-5 text-purple-400 flex-shrink-0" />
+                        <CardTitle className="text-lg">Event Structure</CardTitle>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-2">
+                        <div>
+                          <h4 className="text-sm font-semibold mb-1 text-purple-300">Phase 1: Ideathon (10th-14th Nov)</h4>
+                          <p className="text-xs text-muted-foreground">
+                            A week-long ideation phase where teams brainstorm, research, and develop comprehensive project proposals 
+                            with 4 MVP features. This phase emphasizes innovation, feasibility analysis, and strategic planning.
+                          </p>
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-semibold mb-1 text-purple-300">Phase 2: Hackathon (15th-16th Nov)</h4>
+                          <p className="text-xs text-muted-foreground">
+                            An overnight coding marathon where selected teams bring their ideas to life. Starting with engaging 
+                            activities like Treasure Hunt and What's The Word, followed by intensive development and final pitching.
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
                 </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2 md:space-y-4">
-                  <div>
-                    <h4 className="text-sm md:text-lg font-semibold mb-1 md:mb-2 text-purple-300">Phase 1: Ideathon (10th-14th Nov)</h4>
-                    <p className="text-xs md:text-sm text-muted-foreground">
-                      A week-long ideation phase where teams brainstorm, research, and develop comprehensive project proposals 
-                      with 4 MVP features. This phase emphasizes innovation, feasibility analysis, and strategic planning.
-                    </p>
+              </div>
+
+              {/* Dot Indicators */}
+              <div className="flex items-center justify-center gap-2 mt-4">
+                <button
+                  onClick={() => setActiveOverviewCard(0)}
+                  className={`transition-all duration-300 rounded-full ${
+                    activeOverviewCard === 0 
+                      ? 'w-3 h-3 bg-white' 
+                      : 'w-2 h-2 bg-white/40'
+                  }`}
+                  aria-label="Show Purpose card"
+                />
+                <button
+                  onClick={() => setActiveOverviewCard(1)}
+                  className={`transition-all duration-300 rounded-full ${
+                    activeOverviewCard === 1 
+                      ? 'w-3 h-3 bg-white' 
+                      : 'w-2 h-2 bg-white/40'
+                  }`}
+                  aria-label="Show Event Structure card"
+                />
+              </div>
+            </div>
+
+            {/* Desktop: Grid view with both cards */}
+            <div className="hidden md:grid md:grid-cols-2 gap-8">
+              {/* Purpose and Description */}
+              <Card className="border-2 border-white/50 bg-white/10 backdrop-blur-md p-6">
+                <CardHeader className="pb-3">
+                  <div className="flex items-center gap-3 mb-3">
+                    <Target className="h-8 w-8 text-blue-400 flex-shrink-0" />
+                    <CardTitle className="text-2xl">Purpose</CardTitle>
                   </div>
-                  <div>
-                    <h4 className="text-sm md:text-lg font-semibold mb-1 md:mb-2 text-purple-300">Phase 2: Hackathon (15th-16th Nov)</h4>
-                    <p className="text-xs md:text-sm text-muted-foreground">
-                      An overnight coding marathon where selected teams bring their ideas to life. Starting with engaging 
-                      activities like Treasure Hunt and What's The Word, followed by intensive development and final pitching.
-                    </p>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-base text-muted-foreground leading-relaxed mb-3">
+                    Fantastic 4 is designed to foster innovation, creativity, and technical excellence among students. 
+                    The event aims to bridge the gap between ideation and implementation, encouraging participants to 
+                    think critically, solve real-world problems, and build impactful solutions.
+                  </p>
+                  <p className="text-base text-muted-foreground leading-relaxed">
+                    The mission of this event is to provide students with a structured opportunity to transform their 
+                    innovative ideas into working prototypes, collaborate with peers, learn from industry experts, and 
+                    showcase their technical skills in a competitive yet supportive environment.
+                  </p>
+                </CardContent>
+              </Card>
+
+              {/* Event Structure */}
+              <Card className="border-2 border-white/50 bg-white/10 backdrop-blur-md p-6">
+                <CardHeader className="pb-3">
+                  <div className="flex items-center gap-3 mb-3">
+                    <Calendar className="h-8 w-8 text-purple-400 flex-shrink-0" />
+                    <CardTitle className="text-2xl">Event Structure</CardTitle>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div>
+                      <h4 className="text-lg font-semibold mb-2 text-purple-300">Phase 1: Ideathon (10th-14th Nov)</h4>
+                      <p className="text-sm text-muted-foreground">
+                        A week-long ideation phase where teams brainstorm, research, and develop comprehensive project proposals 
+                        with 4 MVP features. This phase emphasizes innovation, feasibility analysis, and strategic planning.
+                      </p>
+                    </div>
+                    <div>
+                      <h4 className="text-lg font-semibold mb-2 text-purple-300">Phase 2: Hackathon (15th-16th Nov)</h4>
+                      <p className="text-sm text-muted-foreground">
+                        An overnight coding marathon where selected teams bring their ideas to life. Starting with engaging 
+                        activities like Treasure Hunt and What's The Word, followed by intensive development and final pitching.
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </div>
 
           {/* Key Highlights */}
           <div className="mb-4 md:mb-8">
-            <h3 className="text-lg md:text-2xl font-bold mb-3 md:mb-6 text-center bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">
+            <h3 className="text-lg md:text-2xl font-bold mb-4 md:mb-8 text-center bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">
               Why Participate?
             </h3>
-            <div className="grid gap-2 md:gap-4 md:grid-cols-3">
-              <Card className="border-2 border-white/50 bg-white/10 backdrop-blur-md p-3 md:p-5">
-                <CardHeader className="pb-1 md:pb-2">
-                  <Trophy className="h-5 w-5 md:h-7 md:w-7 text-yellow-400 mb-1 md:mb-2" />
-                  <CardTitle className="text-base md:text-xl">Win Prizes</CardTitle>
+            
+            {/* Mobile: Single card view with carousel */}
+            <div className="md:hidden">
+              <div className="relative">
+                {/* Win Prizes Card */}
+                <div className={`transition-opacity duration-300 ${activeWhyParticipateCard === 0 ? 'opacity-100 block' : 'opacity-0 hidden'}`}>
+                  <Card className="border-2 border-white/50 bg-white/10 backdrop-blur-md p-3">
+                    <CardHeader className="pb-1">
+                      <Trophy className="h-5 w-5 text-yellow-400 mb-1" />
+                      <CardTitle className="text-base">Win Prizes</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-xs text-muted-foreground">
+                        Compete for a prize pool of ₹30,000 along with exclusive goodies and recognition from industry leaders.
+                      </p>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* Network & Learn Card */}
+                <div className={`transition-opacity duration-300 ${activeWhyParticipateCard === 1 ? 'opacity-100 block' : 'opacity-0 hidden'}`}>
+                  <Card className="border-2 border-white/50 bg-white/10 backdrop-blur-md p-3">
+                    <CardHeader className="pb-1">
+                      <Users className="h-5 w-5 text-green-400 mb-1" />
+                      <CardTitle className="text-base">Network & Learn</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-xs text-muted-foreground">
+                        Connect with like-minded peers, industry mentors, and potential collaborators. Learn from workshops 
+                        and expert sessions throughout the event.
+                      </p>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* Build Portfolio Card */}
+                <div className={`transition-opacity duration-300 ${activeWhyParticipateCard === 2 ? 'opacity-100 block' : 'opacity-0 hidden'}`}>
+                  <Card className="border-2 border-white/50 bg-white/10 backdrop-blur-md p-3">
+                    <CardHeader className="pb-1">
+                      <Award className="h-5 w-5 text-pink-400 mb-1" />
+                      <CardTitle className="text-base">Build Portfolio</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-xs text-muted-foreground">
+                        Create a real-world project, earn a participation certificate, and add a significant achievement 
+                        to your portfolio that showcases your technical and problem-solving skills.
+                      </p>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+
+              {/* Dot Indicators */}
+              <div className="flex items-center justify-center gap-2 mt-4">
+                <button
+                  onClick={() => setActiveWhyParticipateCard(0)}
+                  className={`transition-all duration-300 rounded-full ${
+                    activeWhyParticipateCard === 0 
+                      ? 'w-3 h-3 bg-white' 
+                      : 'w-2 h-2 bg-white/40'
+                  }`}
+                  aria-label="Show Win Prizes card"
+                />
+                <button
+                  onClick={() => setActiveWhyParticipateCard(1)}
+                  className={`transition-all duration-300 rounded-full ${
+                    activeWhyParticipateCard === 1 
+                      ? 'w-3 h-3 bg-white' 
+                      : 'w-2 h-2 bg-white/40'
+                  }`}
+                  aria-label="Show Network & Learn card"
+                />
+                <button
+                  onClick={() => setActiveWhyParticipateCard(2)}
+                  className={`transition-all duration-300 rounded-full ${
+                    activeWhyParticipateCard === 2 
+                      ? 'w-3 h-3 bg-white' 
+                      : 'w-2 h-2 bg-white/40'
+                  }`}
+                  aria-label="Show Build Portfolio card"
+                />
+              </div>
+            </div>
+
+            {/* Desktop: Grid view with all cards */}
+            <div className="hidden md:grid md:grid-cols-3 gap-6">
+              <Card className="border-2 border-white/50 bg-white/10 backdrop-blur-md p-5">
+                <CardHeader className="pb-2">
+                  <Trophy className="h-7 w-7 text-yellow-400 mb-2" />
+                  <CardTitle className="text-xl">Win Prizes</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-xs md:text-sm text-muted-foreground">
+                  <p className="text-sm text-muted-foreground">
                     Compete for a prize pool of ₹30,000 along with exclusive goodies and recognition from industry leaders.
                   </p>
                 </CardContent>
               </Card>
-              <Card className="border-2 border-white/50 bg-white/10 backdrop-blur-md p-3 md:p-5">
-                <CardHeader className="pb-1 md:pb-2">
-                  <Users className="h-5 w-5 md:h-7 md:w-7 text-green-400 mb-1 md:mb-2" />
-                  <CardTitle className="text-base md:text-xl">Network & Learn</CardTitle>
+              <Card className="border-2 border-white/50 bg-white/10 backdrop-blur-md p-5">
+                <CardHeader className="pb-2">
+                  <Users className="h-7 w-7 text-green-400 mb-2" />
+                  <CardTitle className="text-xl">Network & Learn</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-xs md:text-sm text-muted-foreground">
+                  <p className="text-sm text-muted-foreground">
                     Connect with like-minded peers, industry mentors, and potential collaborators. Learn from workshops 
                     and expert sessions throughout the event.
                   </p>
                 </CardContent>
               </Card>
-              <Card className="border-2 border-white/50 bg-white/10 backdrop-blur-md p-3 md:p-5">
-                <CardHeader className="pb-1 md:pb-2">
-                  <Award className="h-5 w-5 md:h-7 md:w-7 text-pink-400 mb-1 md:mb-2" />
-                  <CardTitle className="text-base md:text-xl">Build Portfolio</CardTitle>
+              <Card className="border-2 border-white/50 bg-white/10 backdrop-blur-md p-5">
+                <CardHeader className="pb-2">
+                  <Award className="h-7 w-7 text-pink-400 mb-2" />
+                  <CardTitle className="text-xl">Build Portfolio</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-xs md:text-sm text-muted-foreground">
+                  <p className="text-sm text-muted-foreground">
                     Create a real-world project, earn a participation certificate, and add a significant achievement 
                     to your portfolio that showcases your technical and problem-solving skills.
                   </p>
@@ -859,7 +1030,7 @@ export default function Fantastic4Page() {
           </a>
         </div>
         <div className="relative mx-auto max-w-6xl px-3 md:px-4 pointer-events-auto z-10 mt-12 md:mt-16">
-          <div className="mb-6 md:mb-12 text-center">
+          <div className="mb-6 md:mb-12 text-center pt-8 md:pt-12">
             <h2 className="mb-3 md:mb-6 text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
               Timeline
             </h2>
@@ -874,15 +1045,17 @@ export default function Fantastic4Page() {
       </section>
 
       {/* Problem Statements */}
-      <section id="problems" className="relative border-y border-border/50 bg-transparent h-screen flex items-center justify-center overflow-hidden z-10 pointer-events-none">
+      <section id="problems" className="relative border-y border-border/50 bg-transparent h-screen flex flex-col overflow-hidden z-10 pointer-events-none">
         {/* Light green background effect for problem statements section - Safari compatible */}
         <div className="absolute inset-0 bg-green-400/20 blur-3xl opacity-60 pointer-events-none z-0" style={{ backgroundColor: 'rgba(74, 222, 128, 0.2)' }}></div>
-        <div className="relative mx-auto max-w-7xl px-3 md:px-4 pointer-events-auto z-10 w-full h-full flex flex-col justify-center py-4 md:py-0">
-          <div className="mb-4 md:mb-8 text-center">
-            <h2 className="mb-3 md:mb-4 text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+        
+        {/* Header Section - Constrained width */}
+        <div className="relative mx-auto max-w-7xl px-3 md:px-4 pointer-events-auto z-10 w-full flex-shrink-0 pt-8 md:pt-12 pb-4 md:pb-6">
+          <div className="text-center">
+            <h2 className="mb-3 md:mb-8 text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
               Problem Statements
             </h2>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 md:gap-3 mb-4 md:mb-6">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 md:gap-3 mb-3 md:mb-6">
               <button
                 onClick={handleDownloadPDF}
                 disabled={isGeneratingPDF}
@@ -902,7 +1075,7 @@ export default function Fantastic4Page() {
                 <span className="whitespace-nowrap">Download SRS</span>
               </a>
             </div>
-            <p className="mx-auto max-w-3xl text-sm md:text-xl lg:text-2xl text-muted-foreground mb-4 md:mb-6 leading-relaxed px-2">
+            <p className="mx-auto max-w-3xl text-sm md:text-xl lg:text-2xl text-muted-foreground mb-3 md:mb-6 leading-relaxed px-2">
               Choose from these AI-generated problem statements or come up with your own innovative solution
             </p>
             <div className="inline-flex items-center gap-1.5 md:gap-2 rounded-full border-2 border-green-500/50 bg-green-500/10 px-3 md:px-6 py-2 md:py-3 text-xs md:text-base lg:text-lg font-semibold text-green-400 backdrop-blur-md max-w-[95%] md:max-w-none">
@@ -910,14 +1083,15 @@ export default function Fantastic4Page() {
               <span className="text-center">Open Innovation: Participants can modify problems or create their own as per MVP requirements</span>
             </div>
           </div>
+        </div>
 
-          {/* Infinite Scrolling Container */}
-          <div className="relative flex-1 min-h-0">
-            {/* Gradient overlays for fade effect */}
-            <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-card/20 via-card/20 to-transparent z-10 pointer-events-none" />
-            <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-card/20 via-card/20 to-transparent z-10 pointer-events-none" />
-            
-            <div className="overflow-hidden h-full">
+        {/* Infinite Scrolling Container - Full viewport width */}
+        <div className="relative flex-1 min-h-0 w-full pointer-events-auto z-10">
+          {/* Gradient overlays for fade effect */}
+          <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-card/20 via-card/20 to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-card/20 via-card/20 to-transparent z-10 pointer-events-none" />
+          
+          <div className="overflow-hidden h-full w-full">
               <div className="flex animate-scroll">
                 {/* First set of cards */}
                 {problemStatements.map((problem) => (
@@ -984,21 +1158,20 @@ export default function Fantastic4Page() {
               </div>
             </div>
           </div>
-        </div>
       </section>
 
       {/* Rules & Judging Criteria */}
       <section id="rules" className="relative border-y border-border/50 bg-transparent h-screen flex items-center justify-center overflow-hidden z-10 pointer-events-none">
         {/* Light green background effect for rules section */}
         <div className="absolute inset-0 bg-green-400/20 blur-3xl opacity-60 pointer-events-none"></div>
-        <div className="relative mx-auto max-w-6xl px-3 md:px-4 pointer-events-auto z-10 w-full h-full flex flex-col justify-center py-4 md:py-0">
-        <div className="mb-4 md:mb-8 text-center">
-          <h2 className="mb-3 md:mb-4 text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+        <div className="relative mx-auto max-w-6xl px-3 md:px-4 pointer-events-auto z-10 w-full md:h-full md:flex md:flex-col md:justify-center py-4 md:py-0">
+        <div className="mb-6 md:mb-12 text-center pt-8 md:pt-12">
+          <h2 className="mb-4 md:mb-8 text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
             Rules & Judging Criteria
           </h2>
         </div>
 
-        <div className="grid gap-4 md:gap-6 md:grid-cols-2 overflow-y-auto flex-1 min-h-0">
+        <div className="grid gap-6 md:gap-8 md:grid-cols-2 md:overflow-y-auto md:flex-1 md:min-h-0">
           <Card className="border-2 border-white/50 bg-white/10 backdrop-blur-md hover:border-white/70 transition-colors">
             <CardHeader className="pb-2 md:pb-3">
               <div className="flex items-center gap-2 mb-2">
@@ -1052,17 +1225,17 @@ export default function Fantastic4Page() {
       <section id="registration" className="relative border-y border-border/50 bg-transparent h-screen flex items-center justify-center overflow-hidden z-10 pointer-events-none">
         {/* Gold background effect for Stage 1 */}
         <div className="absolute inset-0 bg-yellow-400/20 blur-3xl opacity-60 pointer-events-none"></div>
-        <div className="relative w-full px-4 md:px-8 lg:px-12 xl:px-16 pointer-events-auto z-10 h-full flex flex-col justify-center py-4 md:py-0">
-          <div className="text-center mb-4 md:mb-10">
-            <h2 className="mb-2 md:mb-4 text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 bg-clip-text text-transparent">
+        <div className="relative w-full px-4 md:px-8 lg:px-12 xl:px-16 pointer-events-auto z-10 md:h-full md:flex md:flex-col md:justify-center py-4 md:py-0">
+          <div className="text-center mb-6 md:mb-12 pt-8 md:pt-12">
+            <h2 className="mb-3 md:mb-6 text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 bg-clip-text text-transparent">
               STAGE 1: IDEATHON
             </h2>
-            <p className="text-sm md:text-lg lg:text-xl text-muted-foreground mb-4 md:mb-6 max-w-3xl mx-auto px-2">
+            <p className="text-sm md:text-lg lg:text-xl text-muted-foreground mb-4 md:mb-8 max-w-3xl mx-auto px-2">
               Participate in the ideation phase and transform your innovative ideas into actionable project plans.
             </p>
           </div>
 
-          <div className="w-full space-y-4 md:space-y-10 overflow-y-auto flex-1 min-h-0">
+          <div className="w-full space-y-6 md:space-y-12 md:overflow-y-auto md:flex-1 md:min-h-0">
             {/* Step 1 */}
             <div className="flex items-start md:items-center gap-3 md:gap-8 lg:gap-10 justify-between flex-col sm:flex-row">
               <div className="flex items-start md:items-center gap-3 md:gap-8 lg:gap-10 flex-1 w-full">
@@ -1070,7 +1243,7 @@ export default function Fantastic4Page() {
                   <span className="text-yellow-300 font-bold text-base md:text-xl lg:text-2xl">1</span>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-bold text-white mb-1 md:mb-2 text-base md:text-xl lg:text-2xl xl:text-3xl">Register for the Event</p>
+                  <p className="font-bold text-white mb-2 md:mb-3 text-base md:text-xl lg:text-2xl xl:text-3xl">Register for the Event</p>
                   <p className="text-sm md:text-lg lg:text-xl text-white/70 leading-relaxed">Fill out the registration form to secure your spot in the ideathon phase.</p>
                 </div>
               </div>
@@ -1093,8 +1266,8 @@ export default function Fantastic4Page() {
                   <span className="text-yellow-300 font-bold text-base md:text-xl lg:text-2xl">2</span>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-bold text-white mb-1 md:mb-2 text-base md:text-xl lg:text-2xl xl:text-3xl">Document Your Idea</p>
-                  <p className="text-sm md:text-lg lg:text-xl text-white/70 leading-relaxed mb-1 md:mb-2">Download the SRS template and document your innovative idea with all 4 MVP features clearly defined.</p>
+                  <p className="font-bold text-white mb-2 md:mb-3 text-base md:text-xl lg:text-2xl xl:text-3xl">Document Your Idea</p>
+                  <p className="text-sm md:text-lg lg:text-xl text-white/70 leading-relaxed mb-2 md:mb-3">Download the SRS template and document your innovative idea with all 4 MVP features clearly defined.</p>
                   <p className="text-xs md:text-base lg:text-lg xl:text-xl text-yellow-300 font-semibold">Participation certificates will be awarded to all 4 team members upon successful submission.</p>
                 </div>
               </div>
@@ -1116,8 +1289,8 @@ export default function Fantastic4Page() {
                   <span className="text-yellow-300 font-bold text-base md:text-xl lg:text-2xl">3</span>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-bold text-white mb-1 md:mb-2 text-base md:text-xl lg:text-2xl xl:text-3xl">Submit Your Documentation</p>
-                  <p className="text-sm md:text-lg lg:text-xl text-white/70 leading-relaxed mb-1 md:mb-2">Submit your completed SRS document through the submission form before the deadline.</p>
+                  <p className="font-bold text-white mb-2 md:mb-3 text-base md:text-xl lg:text-2xl xl:text-3xl">Submit Your Documentation</p>
+                  <p className="text-sm md:text-lg lg:text-xl text-white/70 leading-relaxed mb-2 md:mb-3">Submit your completed SRS document through the submission form before the deadline.</p>
                   <p className="text-xs md:text-base lg:text-lg xl:text-xl text-yellow-300 font-semibold">Goodies will be provided to the top 3 ideations.</p>
                 </div>
               </div>
@@ -1140,9 +1313,9 @@ export default function Fantastic4Page() {
       <section id="hackathon" className="relative border-y border-border/50 bg-transparent h-screen flex items-center justify-center overflow-hidden z-10 pointer-events-none">
         {/* Gold background effect for Stage 2 */}
         <div className="absolute inset-0 bg-yellow-400/20 blur-3xl opacity-60 pointer-events-none"></div>
-        <div className="relative mx-auto max-w-6xl px-3 md:px-4 pointer-events-auto z-10 w-full h-full flex flex-col justify-center py-4 md:py-0">
-          <div className="text-center mb-4 md:mb-8">
-            <div className="flex items-center justify-center gap-2 md:gap-3 mb-3 md:mb-4">
+        <div className="relative mx-auto max-w-6xl px-3 md:px-4 pointer-events-auto z-10 w-full md:h-full md:flex md:flex-col md:justify-center py-4 md:py-0">
+          <div className="text-center mb-6 md:mb-12 pt-8 md:pt-12">
+            <div className="flex items-center justify-center gap-2 md:gap-3 mb-4 md:mb-6">
               <Lock className="h-6 w-6 md:h-10 md:w-10 text-yellow-400 flex-shrink-0" />
               <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 bg-clip-text text-transparent">
                 STAGE 2: HACKATHON
@@ -1197,7 +1370,7 @@ export default function Fantastic4Page() {
       {/* FAQ Section */}
       <section id="faq" className="relative border-y border-border/50 bg-transparent py-12 md:py-16 overflow-hidden z-10 pointer-events-none">
         <div className="mx-auto max-w-4xl px-3 md:px-4 pointer-events-auto">
-          <div className="mb-6 md:mb-12 text-center">
+          <div className="mb-6 md:mb-12 text-center pt-8 md:pt-12">
             <h2 className="mb-4 md:mb-6 text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
               Frequently Asked Questions
             </h2>
@@ -1239,9 +1412,9 @@ export default function Fantastic4Page() {
 
       {/* Contact Section */}
       <section id="contact" className="relative border-y border-border/50 bg-black h-screen flex items-center justify-center overflow-hidden z-10 pointer-events-none">
-        <div className="relative mx-auto max-w-6xl px-3 md:px-4 pointer-events-auto z-10 w-full h-full flex flex-col justify-center py-4 md:py-0">
-          <div className="text-center mb-4 md:mb-8">
-            <h2 className="mb-2 md:mb-4 text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold text-white">
+        <div className="relative mx-auto max-w-6xl px-3 md:px-4 pointer-events-auto z-10 w-full md:h-full md:flex md:flex-col md:justify-center py-4 md:py-0">
+          <div className="text-center mb-6 md:mb-12 pt-8 md:pt-12">
+            <h2 className="mb-3 md:mb-6 text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold text-white">
               Contact Us
             </h2>
             <p className="text-sm md:text-base lg:text-lg text-white/70 max-w-2xl mx-auto px-2">
@@ -1249,7 +1422,7 @@ export default function Fantastic4Page() {
             </p>
           </div>
           
-          <div className="grid md:grid-cols-2 gap-3 md:gap-4 max-w-xl mx-auto w-full">
+          <div className="grid md:grid-cols-2 gap-4 md:gap-6 max-w-xl mx-auto w-full">
             <Card className="border-2 border-white/50 bg-white/10 backdrop-blur-sm hover:border-white/70 transition-all">
               <CardContent className="pt-3 md:pt-4 pb-3 md:pb-4 px-3 md:px-4">
                 <div className="flex flex-col items-center text-center gap-2 md:gap-3">

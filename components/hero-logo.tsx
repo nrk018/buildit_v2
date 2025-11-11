@@ -96,6 +96,34 @@ export default function HeroLogo() {
       className="relative flex h-[calc(100dvh-64px)] snap-start items-center justify-center overflow-hidden bg-background"
       aria-label="BuildIt hero"
     >
+      {/* Event Notification Banner */}
+      <Link
+        href="/fantastic-4"
+        className="absolute top-0 left-0 right-0 z-50 flex items-center justify-center px-4 py-3 bg-blue-500/30 backdrop-blur-lg border-b border-blue-400/40 hover:bg-blue-500/40 transition-all duration-300 shadow-lg cursor-pointer"
+      >
+        <div className="flex items-center gap-2.5 text-white font-bold text-sm md:text-base">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+          </span>
+          <span className="tracking-wide">EVENT: </span>
+          <div className="flex items-center gap-1">
+            <span className="font-bold leading-tight" style={{ fontFamily: '"Rock Salt", cursive' }}>
+              Fantastic
+            </span>
+            <div className="relative flex items-center justify-center overflow-visible">
+              <span className="flex items-center justify-center w-4 h-4 md:w-5 md:h-5 rounded-full bg-sky-400 border-2 border-white">
+                <span className="text-xs md:text-sm font-bold" style={{ fontFamily: '"Rock Salt", cursive', transform: 'scale(1.3)', position: 'relative', zIndex: 10, color: '#0284c7' }}>
+                  4
+                </span>
+              </span>
+            </div>
+          </div>
+          <span className="tracking-wide"> HAS NOW BEGUN</span>
+          <ChevronDown className="w-4 h-4 rotate-[-90deg] opacity-80" />
+        </div>
+      </Link>
+
       {/* Ambient glows */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
         <div

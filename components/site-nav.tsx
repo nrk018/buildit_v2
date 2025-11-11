@@ -56,15 +56,29 @@ export default function SiteNav() {
                         onClick={() => handleNavClick(item.href)}
                         className={cn(
                           "inline-flex h-9 items-center rounded-full px-3 text-sm leading-none transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap",
-                          isFantastic4 && "text-sky-400 hover:text-sky-300",
-                          active && !isFantastic4
+                          !isFantastic4 && active
                             ? "bg-background text-foreground"
                             : !isFantastic4 && "text-muted-foreground hover:text-foreground hover:bg-background/60",
-                          active && isFantastic4 && "bg-sky-500/20 text-sky-400",
+                          isFantastic4 && active && "bg-sky-500/20",
                         )}
                         aria-current={active ? "page" : undefined}
                       >
-                        {item.label}
+                        {isFantastic4 ? (
+                          <div className="flex items-center gap-1.5">
+                            <span className="font-bold leading-tight" style={{ fontFamily: '"Rock Salt", cursive' }}>
+                              Fantastic
+                            </span>
+                            <div className="relative flex items-center justify-center overflow-visible">
+                              <span className="flex items-center justify-center w-5 h-5 rounded-full bg-sky-400 border-2 border-white">
+                                <span className="text-xs font-bold" style={{ fontFamily: '"Rock Salt", cursive', transform: 'scale(1.3)', position: 'relative', zIndex: 10, color: '#0284c7' }}>
+                                  4
+                                </span>
+                              </span>
+                            </div>
+                          </div>
+                        ) : (
+                          item.label
+                        )}
                       </Link>
                   </li>
                 )
@@ -188,15 +202,29 @@ export default function SiteNav() {
                                 }}
                                 className={cn(
                                   "flex items-center px-4 py-3 rounded-lg text-base font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-ring",
-                                  isFantastic4 && "text-sky-400 hover:text-sky-300",
-                                  active && !isFantastic4
+                                  !isFantastic4 && active
                                     ? "bg-background text-foreground"
                                     : !isFantastic4 && "text-muted-foreground hover:text-foreground hover:bg-background/60",
-                                  active && isFantastic4 && "bg-sky-500/20 text-sky-400",
+                                  isFantastic4 && active && "bg-sky-500/20",
                                 )}
                                 aria-current={active ? "page" : undefined}
                               >
-                                {item.label}
+                                {isFantastic4 ? (
+                                  <div className="flex items-center gap-1.5">
+                                    <span className="font-bold leading-tight" style={{ fontFamily: '"Rock Salt", cursive' }}>
+                                      Fantastic
+                                    </span>
+                                    <div className="relative flex items-center justify-center overflow-visible">
+                                      <span className="flex items-center justify-center w-5 h-5 rounded-full bg-sky-400 border-2 border-white">
+                                        <span className="text-xs font-bold" style={{ fontFamily: '"Rock Salt", cursive', transform: 'scale(1.3)', position: 'relative', zIndex: 10, color: '#0284c7' }}>
+                                          4
+                                        </span>
+                                      </span>
+                                    </div>
+                                  </div>
+                                ) : (
+                                  item.label
+                                )}
                               </Link>
                         </motion.li>
                       )
