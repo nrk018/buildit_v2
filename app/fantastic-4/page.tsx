@@ -33,6 +33,7 @@ import { StardustButton } from "@/components/ui/stardust-button"
 import { problemStatements } from "@/data/fantastic4-problems"
 import { generateProblemStatementsPDF } from "@/lib/pdf-generator"
 import { cn } from "@/lib/utils"
+import { Fantastic4MobileMenu } from "@/components/fantastic-4-mobile-menu"
 
 const domains = [
   { icon: Globe, name: "Web Development", color: "text-blue-400" },
@@ -403,7 +404,6 @@ export default function Fantastic4Page() {
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false)
   const [activeSection, setActiveSection] = useState('hero')
   const [isScrolledPastHero, setIsScrolledPastHero] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
   const [activeOverviewCard, setActiveOverviewCard] = useState(0)
   const [activeWhyParticipateCard, setActiveWhyParticipateCard] = useState(0)
@@ -559,136 +559,14 @@ export default function Fantastic4Page() {
             })}
             </div>
 
-            {/* Mobile Hamburger Button */}
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden flex flex-col items-center justify-center w-8 h-8 space-y-1 focus:outline-none focus:ring-2 focus:ring-ring rounded-md"
-              aria-label="Toggle menu"
-            >
-              <motion.span
-                className="w-6 h-0.5 bg-white block"
-                animate={{
-                  rotate: isMobileMenuOpen ? 45 : 0,
-                  y: isMobileMenuOpen ? 6 : 0,
-                }}
-                transition={{ duration: 0.2 }}
-              />
-              <motion.span
-                className="w-6 h-0.5 bg-white block"
-                animate={{
-                  opacity: isMobileMenuOpen ? 0 : 1,
-                }}
-                transition={{ duration: 0.2 }}
-              />
-              <motion.span
-                className="w-6 h-0.5 bg-white block"
-                animate={{
-                  rotate: isMobileMenuOpen ? -45 : 0,
-                  y: isMobileMenuOpen ? -6 : 0,
-                }}
-                transition={{ duration: 0.2 }}
-              />
-            </button>
+            {/* Mobile Hamburger Menu */}
+            <Fantastic4MobileMenu 
+              navItems={navItems}
+              activeSection={activeSection}
+              onNavClick={scrollToSection}
+            />
           </div>
         </div>
-
-        {/* Mobile Slide Drawer */}
-        <AnimatePresence>
-          {isMobileMenuOpen && (
-            <>
-              {/* Backdrop */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm md:hidden"
-                onClick={() => setIsMobileMenuOpen(false)}
-              />
-              
-              {/* Slide Drawer */}
-              <motion.div
-                initial={{ x: "100%" }}
-                animate={{ x: 0 }}
-                exit={{ x: "100%" }}
-                transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="fixed top-0 right-0 z-50 h-full w-80 max-w-[85vw] bg-card border-l border-white/10 md:hidden"
-              >
-                <div className="flex flex-col h-full">
-                  {/* Drawer Header */}
-                  <div className="flex items-center justify-between p-6 border-b border-white/10">
-                    <Link 
-                      href="/" 
-                      className="font-semibold tracking-tight text-white"
-                      style={{ fontFamily: '"Audiowide", cursive' }}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      ← Back to Home
-                    </Link>
-                    <button
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="p-2 rounded-md hover:bg-background/60 transition-colors"
-                      aria-label="Close menu"
-                    >
-                      <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </button>
-                  </div>
-
-                  {/* Navigation Links */}
-                  <nav className="flex-1 p-6 overflow-y-auto">
-                    <ul className="space-y-2">
-                      {navItems.map((item, index) => {
-                        const isActive = activeSection === item.id
-                        return (
-                          <motion.li
-                            key={item.id}
-                            initial={{ opacity: 0, x: 20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: index * 0.1 }}
-                          >
-                            <button
-                              onClick={() => {
-                                scrollToSection(item.id)
-                                setIsMobileMenuOpen(false)
-                              }}
-                              className={cn(
-                                "flex items-center w-full px-4 py-3 rounded-lg text-base font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-ring",
-                                isActive 
-                                  ? "bg-background text-foreground" 
-                                  : "text-muted-foreground hover:text-foreground hover:bg-background/60"
-                              )}
-                              style={{ fontFamily: '"Audiowide", cursive' }}
-                            >
-                              {item.showBadge && (
-                                <span className="flex items-center justify-center w-6 h-6 rounded-full bg-sky-500/20 border border-sky-500/50 text-sky-400 text-xs font-bold flex-shrink-0 mr-3">
-                                  4
-                                </span>
-                              )}
-                              {item.isLive && (
-                                <span className="relative flex items-center gap-1.5 flex-shrink-0 mr-3">
-                                  <span className="relative flex h-2 w-2">
-                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
-                                  </span>
-                                  <span className="text-xs font-bold text-red-400 animate-pulse">
-                                    LIVE
-                                  </span>
-                                </span>
-                              )}
-                              {item.label}
-                            </button>
-                          </motion.li>
-                        )
-                      })}
-                    </ul>
-                  </nav>
-                </div>
-              </motion.div>
-            </>
-          )}
-        </AnimatePresence>
       </nav>
       {/* Main content wrapper */}
       <div className="relative z-10 min-h-screen">
