@@ -131,48 +131,48 @@ function TimelineCardContent({ item }: { item: TimelineItem }) {
   return (
     <>
       {/* Date badge */}
-      <div className="inline-flex items-center gap-1.5 md:gap-2 rounded-full border border-border/50 bg-card/50 px-2 md:px-3 py-0.5 md:py-1 text-xs font-semibold text-muted-foreground mb-2 md:mb-3">
-        <Calendar className="h-2.5 w-2.5 md:h-3 md:w-3" />
+      <div className="inline-flex items-center gap-1 md:gap-2 rounded-full border border-border/50 bg-card/50 px-1.5 md:px-3 py-0.5 md:py-1 text-[10px] md:text-xs font-semibold text-muted-foreground mb-1.5 md:mb-3">
+        <Calendar className="h-2 w-2 md:h-3 md:w-3" />
         <span>{item.date}</span>
       </div>
 
       {/* Header */}
-      <div className="mb-2 md:mb-3">
-        <div className="flex items-start gap-2 md:gap-3 mb-1.5 md:mb-2">
-          <div className={`rounded-lg bg-card/50 p-1.5 md:p-2 ${item.iconColor} flex-shrink-0`}>
-            <item.icon className="h-4 w-4 md:h-5 md:w-5" />
+      <div className="mb-1.5 md:mb-3">
+        <div className="flex items-start gap-1.5 md:gap-3 mb-1 md:mb-2">
+          <div className={`rounded-lg bg-card/50 p-1 md:p-2 ${item.iconColor} flex-shrink-0`}>
+            <item.icon className="h-3 w-3 md:h-5 md:w-5" />
           </div>
           <div className="flex-1">
-            <h3 className="text-base md:text-xl lg:text-2xl font-bold mb-0.5 md:mb-1">{item.title}</h3>
-            <p className="text-xs md:text-sm font-medium text-muted-foreground">{item.subtitle}</p>
+            <h3 className="text-sm md:text-xl lg:text-2xl font-bold mb-0.5 md:mb-1">{item.title}</h3>
+            <p className="text-[10px] md:text-sm font-medium text-muted-foreground">{item.subtitle}</p>
           </div>
         </div>
       </div>
 
       {/* Description */}
-      <p className="text-muted-foreground mb-3 md:mb-4 text-xs md:text-sm lg:text-base leading-relaxed">
+      <p className="text-muted-foreground mb-2 md:mb-4 text-[10px] md:text-sm lg:text-base leading-relaxed">
         {item.description}
       </p>
 
       {/* Details list */}
-      <div className="space-y-1.5 md:space-y-2">
+      <div className="space-y-1 md:space-y-2">
         {item.details.map((detail, detailIndex) => (
-          <div key={detailIndex} className="flex items-start gap-2 md:gap-2.5 text-xs md:text-sm">
-            <ChevronRight className="h-3 w-3 md:h-4 md:w-4 mt-0.5 flex-shrink-0 text-primary" />
-            <span className="text-muted-foreground">{detail}</span>
+          <div key={detailIndex} className="flex items-start gap-1.5 md:gap-2.5 text-[10px] md:text-sm">
+            <ChevronRight className="h-2.5 w-2.5 md:h-4 md:w-4 mt-0.5 flex-shrink-0 text-primary" />
+            <span className="text-muted-foreground leading-tight">{detail}</span>
           </div>
         ))}
       </div>
 
       {/* SRS Template Download Link for Ideathon Phase */}
       {item.title === "Ideathon Phase" && (
-        <div className="mt-3 md:mt-4 pt-3 md:pt-4 border-t border-white/10">
+        <div className="mt-2 md:mt-4 pt-2 md:pt-4 border-t border-white/10">
           <a
             href="/custom_srs_template.doc"
             download="custom_srs_template.doc"
-            className="inline-flex items-center gap-1.5 md:gap-2 text-xs md:text-sm text-blue-400 hover:text-blue-300 transition-colors underline"
+            className="inline-flex items-center gap-1 md:gap-2 text-[10px] md:text-sm text-blue-400 hover:text-blue-300 transition-colors underline"
           >
-            <Download className="h-3 w-3 md:h-4 md:w-4" />
+            <Download className="h-2.5 w-2.5 md:h-4 md:w-4" />
             <span>Download SRS Template</span>
           </a>
         </div>
@@ -184,6 +184,10 @@ function TimelineCardContent({ item }: { item: TimelineItem }) {
 // Timeline Component with scroll progress  
 function TimelineComponent({ timeline: timelineItems }: { timeline: TimelineItem[] }) {
   const containerRef = useRef<HTMLDivElement>(null)
+  const [scrollDirection, setScrollDirection] = useState<'left' | 'right' | null>(null)
+  const [lastScrollTop, setLastScrollTop] = useState(0)
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start center", "end center"]
@@ -193,6 +197,68 @@ function TimelineComponent({ timeline: timelineItems }: { timeline: TimelineItem
   const fillHeight = useTransform(scrollYProgress, (progress) => {
     return `${progress * 100}%`
   })
+
+  // Track scroll direction for mobile arrows
+  useEffect(() => {
+    let ticking = false
+    
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          if (!containerRef.current) {
+            ticking = false
+            return
+          }
+          
+          const rect = containerRef.current.getBoundingClientRect()
+          const isInViewport = rect.top < window.innerHeight && rect.bottom > 0
+          
+          if (!isInViewport) {
+            setScrollDirection(null)
+            ticking = false
+            return
+          }
+          
+          const currentScrollTop = window.scrollY || window.pageYOffset
+          
+          if (currentScrollTop > lastScrollTop) {
+            // Scrolling down - arrow points right
+            setScrollDirection('right')
+          } else if (currentScrollTop < lastScrollTop) {
+            // Scrolling up - arrow points left
+            setScrollDirection('left')
+          }
+          
+          setLastScrollTop(currentScrollTop)
+          
+          // Clear existing timeout
+          if (scrollTimeoutRef.current) {
+            clearTimeout(scrollTimeoutRef.current)
+          }
+          
+          // Hide arrow after 1 second of no scrolling
+          scrollTimeoutRef.current = setTimeout(() => {
+            setScrollDirection(null)
+          }, 1000)
+          
+          ticking = false
+        })
+        ticking = true
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    
+    // Initial check
+    handleScroll()
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current)
+      }
+    }
+  }, [lastScrollTop])
 
   return (
     <div ref={containerRef} className="relative">
@@ -211,8 +277,8 @@ function TimelineComponent({ timeline: timelineItems }: { timeline: TimelineItem
         />
       </div>
 
-      {/* Vertical timeline line container - Mobile */}
-      <div className="absolute left-8 top-0 bottom-0 w-1 md:hidden z-0">
+      {/* Vertical timeline line container - Mobile (positioned outside left of cards) */}
+      <div className="absolute left-3 top-0 bottom-0 w-0.5 md:hidden z-0">
         {/* Background line (dark/black) */}
         <div className="absolute inset-0 bg-border/40 rounded-full"></div>
         
@@ -226,7 +292,27 @@ function TimelineComponent({ timeline: timelineItems }: { timeline: TimelineItem
         />
       </div>
 
-      <div className="space-y-6 md:space-y-12">
+      {/* Mobile scroll direction arrows */}
+      <div className="md:hidden fixed bottom-8 right-8 z-20">
+        <AnimatePresence>
+          {scrollDirection && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              className="bg-white/20 backdrop-blur-md rounded-full p-3 border-2 border-white/30"
+            >
+              {scrollDirection === 'right' ? (
+                <ChevronRight className="h-6 w-6 text-white" />
+              ) : (
+                <ChevronRight className="h-6 w-6 text-white rotate-180" />
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      <div className="space-y-4 md:space-y-12">
         {timelineItems.map((item, index) => {
           const isEven = index % 2 === 0
           const dotColor = index === 0 ? 'bg-blue-500' :
@@ -242,10 +328,10 @@ function TimelineComponent({ timeline: timelineItems }: { timeline: TimelineItem
           return (
             <div
               key={index}
-              className="relative flex items-center gap-4 md:gap-8"
+              className="relative flex items-center gap-2 md:gap-8"
             >
               {/* Desktop Layout: Even items have card on left, odd items have card on right */}
-              {/* Mobile Layout: Card centered */}
+              {/* Mobile Layout: Card positioned to the right of the line */}
               
               {/* Left side - Card for even (desktop) */}
               <div className={`hidden md:flex flex-1 ${
@@ -271,9 +357,9 @@ function TimelineComponent({ timeline: timelineItems }: { timeline: TimelineItem
                 ) : null}
               </div>
 
-              {/* Mobile: Card always centered */}
-              <div className="flex-1 md:hidden">
-                <div className={`rounded-xl border-2 border-white/50 bg-white/10 backdrop-blur-md p-3 md:p-5 shadow-xl hover:shadow-2xl transition-shadow`}>
+              {/* Mobile: Card positioned to the right of the line, smaller size */}
+              <div className="flex-1 md:hidden ml-10">
+                <div className={`rounded-lg border-2 border-white/50 bg-white/10 backdrop-blur-md p-2.5 shadow-xl hover:shadow-2xl transition-shadow max-w-[85%]`}>
                   <TimelineCardContent item={item} />
                 </div>
               </div>
@@ -1045,12 +1131,12 @@ export default function Fantastic4Page() {
       </section>
 
       {/* Problem Statements */}
-      <section id="problems" className="relative border-y border-border/50 bg-transparent h-screen flex flex-col overflow-hidden z-10 pointer-events-none">
+      <section id="problems" className="relative border-y border-border/50 bg-transparent min-h-screen md:h-screen flex flex-col overflow-hidden z-10 pointer-events-none">
         {/* Light green background effect for problem statements section - Safari compatible */}
         <div className="absolute inset-0 bg-green-400/20 blur-3xl opacity-60 pointer-events-none z-0" style={{ backgroundColor: 'rgba(74, 222, 128, 0.2)' }}></div>
         
         {/* Header Section - Constrained width */}
-        <div className="relative mx-auto max-w-7xl px-3 md:px-4 pointer-events-auto z-10 w-full flex-shrink-0 pt-8 md:pt-12 pb-4 md:pb-6">
+        <div className="relative mx-auto max-w-7xl px-3 md:px-4 pointer-events-auto z-10 w-full flex-shrink-0 pt-6 md:pt-12 pb-3 md:pb-6">
           <div className="text-center">
             <h2 className="mb-3 md:mb-8 text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
               Problem Statements
@@ -1086,16 +1172,16 @@ export default function Fantastic4Page() {
         </div>
 
         {/* Infinite Scrolling Container - Full viewport width */}
-        <div className="relative flex-1 min-h-0 w-full pointer-events-auto z-10">
+        <div className="relative flex-1 min-h-[200px] md:min-h-0 w-full pointer-events-auto z-10">
           {/* Gradient overlays for fade effect */}
-          <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-card/20 via-card/20 to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-card/20 via-card/20 to-transparent z-10 pointer-events-none" />
+          <div className="absolute left-0 top-0 bottom-0 w-12 md:w-32 bg-gradient-to-r from-card/20 via-card/20 to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-12 md:w-32 bg-gradient-to-l from-card/20 via-card/20 to-transparent z-10 pointer-events-none" />
           
           <div className="overflow-hidden h-full w-full">
               <div className="flex animate-scroll">
                 {/* First set of cards */}
                 {problemStatements.map((problem) => (
-                  <div key={`first-${problem.id}`} className="flex-shrink-0 w-72 md:w-96 px-2 md:px-3">
+                  <div key={`first-${problem.id}`} className="flex-shrink-0 w-64 sm:w-72 md:w-96 px-1.5 sm:px-2 md:px-3">
                     <Card className="h-full border-2 border-white/50 bg-white/10 backdrop-blur-sm hover:border-white/70 transition-colors">
                       <CardHeader>
                         <div className="flex items-start justify-between mb-2">
@@ -1126,7 +1212,7 @@ export default function Fantastic4Page() {
                 ))}
                 {/* Duplicate set for seamless loop */}
                 {problemStatements.map((problem) => (
-                  <div key={`second-${problem.id}`} className="flex-shrink-0 w-72 md:w-96 px-2 md:px-3">
+                  <div key={`second-${problem.id}`} className="flex-shrink-0 w-64 sm:w-72 md:w-96 px-1.5 sm:px-2 md:px-3">
                     <Card className="h-full border-2 border-white/50 bg-white/10 backdrop-blur-sm hover:border-white/70 transition-colors">
                       <CardHeader>
                         <div className="flex items-start justify-between mb-2">
@@ -1161,25 +1247,25 @@ export default function Fantastic4Page() {
       </section>
 
       {/* Rules & Judging Criteria */}
-      <section id="rules" className="relative border-y border-border/50 bg-transparent h-screen flex items-center justify-center overflow-hidden z-10 pointer-events-none">
+      <section id="rules" className="relative border-y border-border/50 bg-transparent min-h-screen md:h-screen flex items-center justify-center overflow-hidden z-10 pointer-events-none">
         {/* Light green background effect for rules section */}
         <div className="absolute inset-0 bg-green-400/20 blur-3xl opacity-60 pointer-events-none"></div>
-        <div className="relative mx-auto max-w-6xl px-3 md:px-4 pointer-events-auto z-10 w-full md:h-full md:flex md:flex-col md:justify-center py-4 md:py-0">
-        <div className="mb-6 md:mb-12 text-center pt-8 md:pt-12">
-          <h2 className="mb-4 md:mb-8 text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+        <div className="relative mx-auto max-w-6xl px-3 md:px-4 pointer-events-auto z-10 w-full md:h-full md:flex md:flex-col md:justify-center py-6 md:py-0">
+        <div className="mb-4 md:mb-12 text-center pt-6 md:pt-12">
+          <h2 className="mb-3 md:mb-8 text-xl sm:text-2xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
             Rules & Judging Criteria
           </h2>
         </div>
 
-        <div className="grid gap-6 md:gap-8 md:grid-cols-2 md:overflow-y-auto md:flex-1 md:min-h-0">
+        <div className="grid gap-4 md:gap-8 md:grid-cols-2 md:overflow-y-auto md:flex-1 md:min-h-0">
           <Card className="border-2 border-white/50 bg-white/10 backdrop-blur-md hover:border-white/70 transition-colors">
-            <CardHeader className="pb-2 md:pb-3">
+            <CardHeader className="pb-2 md:pb-3 p-3 md:p-6">
               <div className="flex items-center gap-2 mb-2">
-                <Target className="h-5 w-5 md:h-6 md:w-6 text-blue-400 flex-shrink-0" />
-                <CardTitle className="text-lg md:text-2xl">Rules</CardTitle>
+                <Target className="h-4 w-4 md:h-6 md:w-6 text-blue-400 flex-shrink-0" />
+                <CardTitle className="text-base md:text-2xl">Rules</CardTitle>
               </div>
             </CardHeader>
-            <CardContent>
+            <CardContent className="px-3 md:px-6 pb-3 md:pb-6">
               <ul className="space-y-2 md:space-y-3">
                 {[
                   "Must build all 4 MVP features as specified in your ideation phase",
@@ -1188,8 +1274,8 @@ export default function Fantastic4Page() {
                   "All team members must be present during the pitching session"
                 ].map((rule, index) => (
                   <li key={index} className="flex items-start gap-2 md:gap-3">
-                    <CheckCircle2 className="h-4 w-4 md:h-5 md:w-5 text-green-400 mt-0.5 flex-shrink-0" />
-                    <span className="text-xs md:text-sm text-muted-foreground">{rule}</span>
+                    <CheckCircle2 className="h-3.5 w-3.5 md:h-5 md:w-5 text-green-400 mt-0.5 flex-shrink-0" />
+                    <span className="text-xs md:text-sm text-muted-foreground leading-relaxed">{rule}</span>
                   </li>
                 ))}
               </ul>
@@ -1197,20 +1283,20 @@ export default function Fantastic4Page() {
           </Card>
 
           <Card className="border-2 border-white/50 bg-white/10 backdrop-blur-md hover:border-white/70 transition-colors">
-            <CardHeader className="pb-2 md:pb-3">
+            <CardHeader className="pb-2 md:pb-3 p-3 md:p-6">
               <div className="flex items-center gap-2 mb-2">
-                <Award className="h-5 w-5 md:h-6 md:w-6 text-yellow-400 flex-shrink-0" />
-                <CardTitle className="text-lg md:text-2xl">Judging Criteria</CardTitle>
+                <Award className="h-4 w-4 md:h-6 md:w-6 text-yellow-400 flex-shrink-0" />
+                <CardTitle className="text-base md:text-2xl">Judging Criteria</CardTitle>
               </div>
             </CardHeader>
-            <CardContent>
-              <ul className="space-y-3 md:space-y-4">
+            <CardContent className="px-3 md:px-6 pb-3 md:pb-6">
+              <ul className="space-y-2.5 md:space-y-4">
                 {judgingCriteria.map((criterion, index) => (
                   <li key={index} className="flex items-start gap-2 md:gap-3">
-                    <CheckCircle2 className="h-4 w-4 md:h-5 md:w-5 text-purple-400 flex-shrink-0 mt-0.5 md:mt-1" />
+                    <CheckCircle2 className="h-3.5 w-3.5 md:h-5 md:w-5 text-purple-400 flex-shrink-0 mt-0.5 md:mt-1" />
                     <div>
-                      <div className="font-semibold mb-1 text-sm md:text-lg">{criterion.criterion}</div>
-                      <div className="text-xs md:text-sm text-muted-foreground">{criterion.description}</div>
+                      <div className="font-semibold mb-0.5 md:mb-1 text-xs md:text-lg">{criterion.criterion}</div>
+                      <div className="text-xs md:text-sm text-muted-foreground leading-relaxed">{criterion.description}</div>
                     </div>
                   </li>
                 ))}
@@ -1222,85 +1308,85 @@ export default function Fantastic4Page() {
       </section>
 
       {/* Stage 1: Ideathon Section */}
-      <section id="registration" className="relative border-y border-border/50 bg-transparent h-screen flex items-center justify-center overflow-hidden z-10 pointer-events-none">
+      <section id="registration" className="relative border-y border-border/50 bg-transparent min-h-screen md:h-screen flex items-center justify-center overflow-hidden z-10 pointer-events-none">
         {/* Gold background effect for Stage 1 */}
         <div className="absolute inset-0 bg-yellow-400/20 blur-3xl opacity-60 pointer-events-none"></div>
-        <div className="relative w-full px-4 md:px-8 lg:px-12 xl:px-16 pointer-events-auto z-10 md:h-full md:flex md:flex-col md:justify-center py-4 md:py-0">
-          <div className="text-center mb-6 md:mb-12 pt-8 md:pt-12">
-            <h2 className="mb-3 md:mb-6 text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 bg-clip-text text-transparent">
+        <div className="relative w-full px-3 sm:px-4 md:px-8 lg:px-12 xl:px-16 pointer-events-auto z-10 md:h-full md:flex md:flex-col md:justify-center py-6 md:py-0">
+          <div className="text-center mb-4 md:mb-12 pt-6 md:pt-12">
+            <h2 className="mb-2 md:mb-6 text-xl sm:text-2xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 bg-clip-text text-transparent">
               STAGE 1: IDEATHON
             </h2>
-            <p className="text-sm md:text-lg lg:text-xl text-muted-foreground mb-4 md:mb-8 max-w-3xl mx-auto px-2">
+            <p className="text-xs sm:text-sm md:text-lg lg:text-xl text-muted-foreground mb-3 md:mb-8 max-w-3xl mx-auto px-2">
               Participate in the ideation phase and transform your innovative ideas into actionable project plans.
             </p>
           </div>
 
-          <div className="w-full space-y-6 md:space-y-12 md:overflow-y-auto md:flex-1 md:min-h-0">
+          <div className="w-full space-y-4 md:space-y-12 md:overflow-y-auto md:flex-1 md:min-h-0">
             {/* Step 1 */}
-            <div className="flex items-start md:items-center gap-3 md:gap-8 lg:gap-10 justify-between flex-col sm:flex-row">
-              <div className="flex items-start md:items-center gap-3 md:gap-8 lg:gap-10 flex-1 w-full">
-                <div className="flex-shrink-0 w-8 h-8 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-full bg-yellow-400/40 border-2 border-yellow-400/60 flex items-center justify-center">
-                  <span className="text-yellow-300 font-bold text-base md:text-xl lg:text-2xl">1</span>
+            <div className="flex items-start md:items-center gap-2.5 sm:gap-3 md:gap-8 lg:gap-10 justify-between flex-col sm:flex-row">
+              <div className="flex items-start md:items-center gap-2.5 sm:gap-3 md:gap-8 lg:gap-10 flex-1 w-full">
+                <div className="flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-full bg-yellow-400/40 border-2 border-yellow-400/60 flex items-center justify-center">
+                  <span className="text-yellow-300 font-bold text-sm sm:text-base md:text-xl lg:text-2xl">1</span>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-bold text-white mb-2 md:mb-3 text-base md:text-xl lg:text-2xl xl:text-3xl">Register for the Event</p>
-                  <p className="text-sm md:text-lg lg:text-xl text-white/70 leading-relaxed">Fill out the registration form to secure your spot in the ideathon phase.</p>
+                  <p className="font-bold text-white mb-1.5 sm:mb-2 md:mb-3 text-sm sm:text-base md:text-xl lg:text-2xl xl:text-3xl">Register for the Event</p>
+                  <p className="text-xs sm:text-sm md:text-lg lg:text-xl text-white/70 leading-relaxed">Fill out the registration form to secure your spot in the ideathon phase.</p>
                 </div>
               </div>
               <a 
                 href="https://docs.google.com/forms/d/e/1FAIpQLSc9xhCsVaAfjwmXmMAUMoU8Tq4z5_AZTnEnkT8E89qnLnpiag/viewform"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block flex-shrink-0 w-full sm:w-auto"
+                className="inline-block flex-shrink-0 w-full sm:w-auto mt-2 sm:mt-0"
               >
-                <StardustButton className="scale-55 sm:scale-75 md:scale-85 lg:scale-100 w-full sm:w-auto">
+                <StardustButton className="scale-50 sm:scale-75 md:scale-85 lg:scale-100 w-full sm:w-auto">
                   REGISTER
                 </StardustButton>
               </a>
             </div>
 
             {/* Step 2 */}
-            <div className="flex items-start md:items-center gap-3 md:gap-8 lg:gap-10 justify-between flex-col sm:flex-row">
-              <div className="flex items-start md:items-center gap-3 md:gap-8 lg:gap-10 flex-1 w-full">
-                <div className="flex-shrink-0 w-8 h-8 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-full bg-yellow-400/40 border-2 border-yellow-400/60 flex items-center justify-center">
-                  <span className="text-yellow-300 font-bold text-base md:text-xl lg:text-2xl">2</span>
+            <div className="flex items-start md:items-center gap-2.5 sm:gap-3 md:gap-8 lg:gap-10 justify-between flex-col sm:flex-row">
+              <div className="flex items-start md:items-center gap-2.5 sm:gap-3 md:gap-8 lg:gap-10 flex-1 w-full">
+                <div className="flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-full bg-yellow-400/40 border-2 border-yellow-400/60 flex items-center justify-center">
+                  <span className="text-yellow-300 font-bold text-sm sm:text-base md:text-xl lg:text-2xl">2</span>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-bold text-white mb-2 md:mb-3 text-base md:text-xl lg:text-2xl xl:text-3xl">Document Your Idea</p>
-                  <p className="text-sm md:text-lg lg:text-xl text-white/70 leading-relaxed mb-2 md:mb-3">Download the SRS template and document your innovative idea with all 4 MVP features clearly defined.</p>
-                  <p className="text-xs md:text-base lg:text-lg xl:text-xl text-yellow-300 font-semibold">Participation certificates will be awarded to all 4 team members upon successful submission.</p>
+                  <p className="font-bold text-white mb-1.5 sm:mb-2 md:mb-3 text-sm sm:text-base md:text-xl lg:text-2xl xl:text-3xl">Document Your Idea</p>
+                  <p className="text-xs sm:text-sm md:text-lg lg:text-xl text-white/70 leading-relaxed mb-1.5 sm:mb-2 md:mb-3">Download the SRS template and document your innovative idea with all 4 MVP features clearly defined.</p>
+                  <p className="text-xs sm:text-xs md:text-base lg:text-lg xl:text-xl text-yellow-300 font-semibold">Participation certificates will be awarded to all 4 team members upon successful submission.</p>
                 </div>
               </div>
               <a 
                 href="/custom_srs_template.doc"
                 download="custom_srs_template.doc"
-                className="inline-block flex-shrink-0 w-full sm:w-auto"
+                className="inline-block flex-shrink-0 w-full sm:w-auto mt-2 sm:mt-0"
               >
-                <StardustButton className="scale-55 sm:scale-75 md:scale-85 lg:scale-100 w-full sm:w-auto">
+                <StardustButton className="scale-50 sm:scale-75 md:scale-85 lg:scale-100 w-full sm:w-auto">
                   DOCUMENT YOUR IDEA
                 </StardustButton>
               </a>
             </div>
 
             {/* Step 3 */}
-            <div className="flex items-start md:items-center gap-3 md:gap-8 lg:gap-10 justify-between flex-col sm:flex-row">
-              <div className="flex items-start md:items-center gap-3 md:gap-8 lg:gap-10 flex-1 w-full">
-                <div className="flex-shrink-0 w-8 h-8 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-full bg-yellow-400/40 border-2 border-yellow-400/60 flex items-center justify-center">
-                  <span className="text-yellow-300 font-bold text-base md:text-xl lg:text-2xl">3</span>
+            <div className="flex items-start md:items-center gap-2.5 sm:gap-3 md:gap-8 lg:gap-10 justify-between flex-col sm:flex-row">
+              <div className="flex items-start md:items-center gap-2.5 sm:gap-3 md:gap-8 lg:gap-10 flex-1 w-full">
+                <div className="flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-full bg-yellow-400/40 border-2 border-yellow-400/60 flex items-center justify-center">
+                  <span className="text-yellow-300 font-bold text-sm sm:text-base md:text-xl lg:text-2xl">3</span>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-bold text-white mb-2 md:mb-3 text-base md:text-xl lg:text-2xl xl:text-3xl">Submit Your Documentation</p>
-                  <p className="text-sm md:text-lg lg:text-xl text-white/70 leading-relaxed mb-2 md:mb-3">Submit your completed SRS document through the submission form before the deadline.</p>
-                  <p className="text-xs md:text-base lg:text-lg xl:text-xl text-yellow-300 font-semibold">Goodies will be provided to the top 3 ideations.</p>
+                  <p className="font-bold text-white mb-1.5 sm:mb-2 md:mb-3 text-sm sm:text-base md:text-xl lg:text-2xl xl:text-3xl">Submit Your Documentation</p>
+                  <p className="text-xs sm:text-sm md:text-lg lg:text-xl text-white/70 leading-relaxed mb-1.5 sm:mb-2 md:mb-3">Submit your completed SRS document through the submission form before the deadline.</p>
+                  <p className="text-xs sm:text-xs md:text-base lg:text-lg xl:text-xl text-yellow-300 font-semibold">Goodies will be provided to the top 3 ideations.</p>
                 </div>
               </div>
               <a 
                 href="https://docs.google.com/forms/d/e/1FAIpQLSeV9FdT5yFAwBA-40DZb98kkXenajHDW1-jxJsYQdyABI9p_g/viewform?usp=publish-editor"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block flex-shrink-0 w-full sm:w-auto"
+                className="inline-block flex-shrink-0 w-full sm:w-auto mt-2 sm:mt-0"
               >
-                <StardustButton className="scale-55 sm:scale-75 md:scale-85 lg:scale-100 w-full sm:w-auto">
+                <StardustButton className="scale-50 sm:scale-75 md:scale-85 lg:scale-100 w-full sm:w-auto">
                   SUBMIT
                 </StardustButton>
               </a>
