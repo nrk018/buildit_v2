@@ -54,6 +54,31 @@ export default function DebugLeaderboardPage() {
     }
   }
 
+  const fixLeaderboardDirect = async () => {
+    setIsLoading(true)
+    setError("")
+    setResult(null)
+
+    try {
+      const response = await fetch("/api/admin/fix-leaderboard-direct", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" }
+      })
+
+      const data = await response.json()
+      
+      if (response.ok) {
+        setResult(data)
+      } else {
+        setError(data.error || "Direct fix failed")
+      }
+    } catch (err) {
+      setError("Connection error. Please try again.")
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
       <motion.div
@@ -88,6 +113,14 @@ export default function DebugLeaderboardPage() {
             >
               {isLoading ? "Fixing..." : "Fix Leaderboard Table"}
             </button>
+
+            <button
+              onClick={fixLeaderboardDirect}
+              disabled={isLoading}
+              className="w-full rounded-lg border border-red-500/30 bg-red-500/10 backdrop-blur-md px-4 py-3 text-red-400 font-medium hover:bg-red-500/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isLoading ? "Direct Fixing..." : "Direct Fix (Drops & Recreates Table)"}
+            </button>
           </div>
 
           {error && (
@@ -115,6 +148,12 @@ export default function DebugLeaderboardPage() {
             <li>4. Creates the `update_team_ranks()` function</li>
             <li>5. Tests the table with a sample insert</li>
           </ol>
+          <div className="mt-3 p-3 bg-red-500/10 border border-red-500/50 rounded">
+            <p className="text-red-300 text-sm">
+              <strong>Direct Fix:</strong> Drops the existing table completely and recreates it from scratch. 
+              Use this if the regular fix doesn't work.
+            </p>
+          </div>
         </div>
 
         <div className="mt-6">

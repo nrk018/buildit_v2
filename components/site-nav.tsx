@@ -12,14 +12,18 @@ const nav = [
   { href: "/about", label: "About" },
   { href: "/build-cycle", label: "Build Cycle" },
   { href: "/leaderboard", label: "Leaderboard" },
-  { href: "/live-projects", label: "Live Projects" },
+  { href: "/fantastic-4", label: "Fantastic 4" },
   { href: "/social", label: "Social" },
 ]
 
 export default function SiteNav() {
   const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
-
+  
+  // Hide navbar on Fantastic 4 page
+  if (pathname === '/fantastic-4') {
+    return null
+  }
 
   const toggleMenu = () => {
     setIsOpen(!isOpen)
@@ -44,6 +48,7 @@ export default function SiteNav() {
             <ul className="hidden md:flex items-center gap-1 flex-1 justify-end">
               {nav.map((item) => {
                 const active = pathname === item.href
+                const isFantastic4 = item.href === "/fantastic-4"
                 return (
                   <li key={item.href} className="flex flex-shrink-0">
                       <Link
@@ -51,9 +56,11 @@ export default function SiteNav() {
                         onClick={() => handleNavClick(item.href)}
                         className={cn(
                           "inline-flex h-9 items-center rounded-full px-3 text-sm leading-none transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap",
-                          active
+                          isFantastic4 && "text-sky-400 hover:text-sky-300",
+                          active && !isFantastic4
                             ? "bg-background text-foreground"
-                            : "text-muted-foreground hover:text-foreground hover:bg-background/60",
+                            : !isFantastic4 && "text-muted-foreground hover:text-foreground hover:bg-background/60",
+                          active && isFantastic4 && "bg-sky-500/20 text-sky-400",
                         )}
                         aria-current={active ? "page" : undefined}
                       >
@@ -165,6 +172,7 @@ export default function SiteNav() {
                   <ul className="space-y-2">
                     {nav.map((item, index) => {
                       const active = pathname === item.href
+                      const isFantastic4 = item.href === "/fantastic-4"
                       return (
                         <motion.li
                           key={item.href}
@@ -180,9 +188,11 @@ export default function SiteNav() {
                                 }}
                                 className={cn(
                                   "flex items-center px-4 py-3 rounded-lg text-base font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-ring",
-                                  active
+                                  isFantastic4 && "text-sky-400 hover:text-sky-300",
+                                  active && !isFantastic4
                                     ? "bg-background text-foreground"
-                                    : "text-muted-foreground hover:text-foreground hover:bg-background/60",
+                                    : !isFantastic4 && "text-muted-foreground hover:text-foreground hover:bg-background/60",
+                                  active && isFantastic4 && "bg-sky-500/20 text-sky-400",
                                 )}
                                 aria-current={active ? "page" : undefined}
                               >

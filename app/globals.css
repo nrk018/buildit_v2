@@ -141,6 +141,18 @@
     @apply bg-background text-foreground;
   }
   
+  /* Audiowide font for Fantastic 4 page */
+  [data-fantastic-4-page] *:not([style*="Rock Salt"]) {
+    font-family: "Audiowide", cursive !important;
+    color: #ffffff !important;
+  }
+  
+  [data-fantastic-4-page] .text-muted-foreground,
+  [data-fantastic-4-page] [class*="text-muted"] {
+    color: #ffffff !important;
+    opacity: 0.8;
+  }
+  
   /* Force all text to be white across all browsers */
   * {
     color: #ffffff !important;
@@ -245,6 +257,7 @@
     image-rendering: pixelated;
     pointer-events: none;
   }
+  
 }
 
 /* utility for animated stripes used by progress bar */
@@ -260,5 +273,47 @@
     animation: stripes-move 0.8s linear infinite;
     opacity: 0.25;
     mix-blend-mode: overlay;
+  }
+
+  /* Infinite scroll animation for problem statements */
+  @keyframes scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+  .animate-scroll {
+    animation: scroll 60s linear infinite;
+    display: flex;
+    width: fit-content;
+  }
+  .animate-scroll:hover {
+    animation-play-state: paused;
+  }
+
+  /* Background Ripple Effect Animation */
+  @keyframes cell-ripple {
+    0% {
+      opacity: 0.4;
+    }
+    50% {
+      opacity: 0.8;
+    }
+    100% {
+      opacity: 0.4;
+    }
+  }
+  .animate-cell-ripple {
+    animation: cell-ripple var(--duration, 200ms) ease-out none 1 var(--delay, 0ms);
+  }
+
+  /* Mask utilities for ripple effect */
+  .mask-radial-from-20\% {
+    mask-image: radial-gradient(ellipse 80% 50% at 50% 20%, black 40%, transparent 50%);
+  }
+  .mask-radial-at-top {
+    mask-position: center top;
   }
 }
