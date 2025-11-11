@@ -733,13 +733,13 @@ export default function Fantastic4Page() {
         {/* Brighter sky blue background effect for event overview section - Safari compatible */}
         <div className="absolute inset-0 bg-sky-400/30 blur-3xl opacity-70 pointer-events-none z-0" style={{ backgroundColor: 'rgba(56, 189, 248, 0.3)' }}></div>
         <div className="relative mx-auto max-w-7xl px-4 md:px-6 pointer-events-auto z-10 w-full md:h-full md:flex md:flex-col md:justify-center py-4 md:py-0">
-          <div className="mb-4 md:mb-12 text-center pt-4 md:pt-12">
-            <h2 className="mb-3 md:mb-8 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+          <div className="mb-4 md:mb-6 text-center pt-4 md:pt-8">
+            <h2 className="mb-3 md:mb-6 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
               Event Overview
             </h2>
           </div>
 
-          <div className="mb-6 md:mb-12 md:overflow-y-auto md:flex-1 md:min-h-0">
+          <div className="mb-4 md:mb-6">
             {/* Mobile: Single card view with carousel */}
             <div className="md:hidden">
               <div className="relative">
@@ -822,22 +822,22 @@ export default function Fantastic4Page() {
             </div>
 
             {/* Desktop: Grid view with both cards */}
-            <div className="hidden md:grid md:grid-cols-2 gap-8">
+            <div className="hidden md:grid md:grid-cols-2 md:gap-6 md:items-start">
               {/* Purpose and Description */}
-              <Card className="border-2 border-white/50 bg-white/10 backdrop-blur-md p-6">
-                <CardHeader className="pb-3">
-                  <div className="flex items-center gap-3 mb-3">
-                    <Target className="h-8 w-8 text-blue-400 flex-shrink-0" />
-                    <CardTitle className="text-2xl">Purpose</CardTitle>
+              <Card className="border-2 border-white/50 bg-white/10 backdrop-blur-md md:p-5">
+                <CardHeader className="pb-2">
+                  <div className="flex items-center gap-3 mb-2">
+                    <Target className="h-7 w-7 text-blue-400 flex-shrink-0" />
+                    <CardTitle className="text-xl">Purpose</CardTitle>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-base text-muted-foreground leading-relaxed mb-3">
+                  <p className="text-sm text-muted-foreground leading-relaxed mb-2">
                     Fantastic 4 is designed to foster innovation, creativity, and technical excellence among students. 
                     The event aims to bridge the gap between ideation and implementation, encouraging participants to 
                     think critically, solve real-world problems, and build impactful solutions.
                   </p>
-                  <p className="text-base text-muted-foreground leading-relaxed">
+                  <p className="text-sm text-muted-foreground leading-relaxed">
                     The mission of this event is to provide students with a structured opportunity to transform their 
                     innovative ideas into working prototypes, collaborate with peers, learn from industry experts, and 
                     showcase their technical skills in a competitive yet supportive environment.
@@ -846,25 +846,25 @@ export default function Fantastic4Page() {
               </Card>
 
               {/* Event Structure */}
-              <Card className="border-2 border-white/50 bg-white/10 backdrop-blur-md p-6">
-                <CardHeader className="pb-3">
-                  <div className="flex items-center gap-3 mb-3">
-                    <Calendar className="h-8 w-8 text-purple-400 flex-shrink-0" />
-                    <CardTitle className="text-2xl">Event Structure</CardTitle>
+              <Card className="border-2 border-white/50 bg-white/10 backdrop-blur-md md:p-5">
+                <CardHeader className="pb-2">
+                  <div className="flex items-center gap-3 mb-2">
+                    <Calendar className="h-7 w-7 text-purple-400 flex-shrink-0" />
+                    <CardTitle className="text-xl">Event Structure</CardTitle>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     <div>
-                      <h4 className="text-lg font-semibold mb-2 text-purple-300">Phase 1: Ideathon (10th-14th Nov)</h4>
-                      <p className="text-sm text-muted-foreground">
+                      <h4 className="text-base font-semibold mb-1.5 text-purple-300">Phase 1: Ideathon (10th-14th Nov)</h4>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
                         A week-long ideation phase where teams brainstorm, research, and develop comprehensive project proposals 
                         with 4 MVP features. This phase emphasizes innovation, feasibility analysis, and strategic planning.
                       </p>
                     </div>
                     <div>
-                      <h4 className="text-lg font-semibold mb-2 text-purple-300">Phase 2: Hackathon (15th-16th Nov)</h4>
-                      <p className="text-sm text-muted-foreground">
+                      <h4 className="text-base font-semibold mb-1.5 text-purple-300">Phase 2: Hackathon (15th-16th Nov)</h4>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
                         An overnight coding marathon where selected teams bring their ideas to life. Starting with engaging 
                         activities like Treasure Hunt and What's The Word, followed by intensive development and final pitching.
                       </p>
