@@ -113,14 +113,15 @@ export function Fantastic4MobileMenu({
 
   return (
     <>
-      {/* Mobile Hamburger Button */}
+      {/* Mobile Hamburger Button — 44px min touch target */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="md:hidden flex flex-col items-center justify-center w-8 h-8 space-y-1 focus:outline-none focus:ring-2 focus:ring-ring rounded-md"
+        className="md:hidden flex flex-col items-center justify-center min-w-[44px] min-h-[44px] w-11 h-11 -my-1 -mr-1 space-y-1 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-transparent rounded-xl active:opacity-80 transition-opacity"
         aria-label="Toggle menu"
       >
         <motion.span
-          className="w-6 h-0.5 bg-white block"
+          className="w-6 h-0.5 block"
+          style={{ backgroundColor: "#0E4A80" }}
           animate={{
             rotate: isOpen ? 45 : 0,
             y: isOpen ? 6 : 0,
@@ -128,14 +129,16 @@ export function Fantastic4MobileMenu({
           transition={{ duration: 0.2 }}
         />
         <motion.span
-          className="w-6 h-0.5 bg-white block"
+          className="w-6 h-0.5 block"
+          style={{ backgroundColor: "#0E4A80" }}
           animate={{
             opacity: isOpen ? 0 : 1,
           }}
           transition={{ duration: 0.2 }}
         />
         <motion.span
-          className="w-6 h-0.5 bg-white block"
+          className="w-6 h-0.5 block"
+          style={{ backgroundColor: "#0E4A80" }}
           animate={{
             rotate: isOpen ? -45 : 0,
             y: isOpen ? -6 : 0,
@@ -176,12 +179,20 @@ export function Fantastic4MobileMenu({
                   navContainerRef.current.scrollTop = 0
                 }
               }}
-              className="fixed top-0 right-0 z-50 h-screen w-80 max-w-[85vw] bg-card border-l border-white/10 md:hidden overflow-hidden touch-none rounded-l-2xl shadow-2xl"
-              style={{ overscrollBehavior: 'none', marginTop: 0, marginRight: 0 }}
+              className="fixed top-0 right-0 z-50 h-screen w-80 max-w-[85vw] md:hidden overflow-hidden touch-none rounded-l-2xl shadow-2xl border-l border-white/20"
+              style={{ 
+                backgroundColor: 'rgba(1, 5, 11, 0.98)',
+                overscrollBehavior: 'none', 
+                marginTop: 0, 
+                marginRight: 0,
+                paddingTop: 'env(safe-area-inset-top, 0)',
+                paddingRight: 'env(safe-area-inset-right, 0)',
+                paddingBottom: 'env(safe-area-inset-bottom, 0)',
+              }}
             >
               <div className="flex flex-col h-full overflow-hidden">
-                {/* Drawer Header */}
-                <div className="flex items-center justify-between p-6 border-b border-white/10 flex-shrink-0 rounded-tl-2xl">
+                {/* Drawer Header — safe area and touch targets */}
+                <div className="flex items-center justify-between p-4 pt-[max(1rem,env(safe-area-inset-top))] border-b border-white/10 flex-shrink-0 rounded-tl-2xl">
                   <Link 
                     href="/" 
                     className="font-semibold tracking-tight text-white"
@@ -192,7 +203,7 @@ export function Fantastic4MobileMenu({
                   </Link>
                   <button
                     onClick={() => setIsOpen(false)}
-                    className="p-2 rounded-md hover:bg-background/60 transition-colors"
+                    className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl hover:bg-background/60 active:opacity-80 transition-colors"
                     aria-label="Close menu"
                   >
                     <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -225,7 +236,7 @@ export function Fantastic4MobileMenu({
                           <button
                             onClick={() => handleNavClick(item.id)}
                             className={cn(
-                              "flex items-center w-full px-4 py-3 rounded-lg text-base font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-ring",
+                              "flex items-center w-full min-h-[44px] px-4 py-3 rounded-xl text-base font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-ring active:opacity-90",
                               isActive 
                                 ? "bg-background text-foreground" 
                                 : "text-muted-foreground hover:text-foreground hover:bg-background/60"
@@ -233,17 +244,17 @@ export function Fantastic4MobileMenu({
                             style={{ fontFamily: '"Audiowide", cursive' }}
                           >
                             {item.showBadge && (
-                              <span className="flex items-center justify-center w-6 h-6 rounded-full bg-sky-500/20 border border-sky-500/50 text-sky-400 text-xs font-bold flex-shrink-0 mr-3">
+                              <span className="flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold flex-shrink-0 mr-3" style={{ backgroundColor: 'rgba(14,74,128,0.4)', border: '1px solid #0e4a80', color: '#ffffff' }}>
                                 4
                               </span>
                             )}
                             {item.isLive && (
                               <span className="relative flex items-center gap-1.5 flex-shrink-0 mr-3">
                                 <span className="relative flex h-2 w-2">
-                                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                                  <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ backgroundColor: '#158fd4' }}></span>
+                                  <span className="relative inline-flex rounded-full h-2 w-2" style={{ backgroundColor: '#0e4a80' }}></span>
                                 </span>
-                                <span className="text-xs font-bold text-red-400 animate-pulse">
+                                <span className="text-xs font-bold animate-pulse" style={{ color: '#9daecc' }}>
                                   LIVE
                                 </span>
                               </span>

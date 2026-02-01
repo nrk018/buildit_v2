@@ -146,6 +146,30 @@
     font-family: "Audiowide", cursive !important;
     color: #ffffff !important;
   }
+  /* Exception: white buttons and cards on Fantastic 4 use black text */
+  [data-fantastic-4-page] .f4-cta-button,
+  [data-fantastic-4-page] .f4-cta-button *,
+  [data-fantastic-4-page] .f4-timeline-node,
+  [data-fantastic-4-page] .f4-timeline-node *,
+  [data-fantastic-4-page] [data-slot="card"],
+  [data-fantastic-4-page] [data-slot="card"] * {
+    color: #000000 !important;
+  }
+  [data-fantastic-4-page] [data-slot="card"] [class*="muted"],
+  [data-fantastic-4-page] .f4-timeline-node [class*="muted"] {
+    color: #374151 !important;
+  }
+  /* Exception: Fantastic 4 navbar uses #0E4A80 text */
+  [data-fantastic-4-page] .f4-nav,
+  [data-fantastic-4-page] .f4-nav *,
+  [data-fantastic-4-page] .f4-nav-bar,
+  [data-fantastic-4-page] .f4-nav-bar *,
+  [data-fantastic-4-page] nav.f4-nav a,
+  [data-fantastic-4-page] nav.f4-nav a span,
+  [data-fantastic-4-page] nav.f4-nav button,
+  [data-fantastic-4-page] nav.f4-nav button span {
+    color: #0E4A80 !important;
+  }
   
   [data-fantastic-4-page] .text-muted-foreground,
   [data-fantastic-4-page] [class*="text-muted"] {
@@ -182,9 +206,9 @@
     background-color: #000000 !important;
   }
   
-  /* Specific navbar overrides for Chrome */
+  /* Specific navbar overrides for Chrome (not on Fantastic 4 — F4 nav uses #0E4A80) */
   header,
-  nav,
+  nav:not(.f4-nav),
   .text-white,
   [class*="text-white"],
   .font-semibold,
@@ -192,26 +216,34 @@
     color: #ffffff !important;
   }
   
-  /* Navbar links and text */
+  /* Navbar links and text (exclude Fantastic 4 nav — F4 nav has .f4-nav) */
   header a,
   header span,
-  nav a,
-  nav span {
+  nav:not(.f4-nav) a,
+  nav:not(.f4-nav) span {
     color: #ffffff !important;
   }
   
-  /* Chrome-specific navbar fix */
+  /* Chrome-specific navbar fix (exclude Fantastic 4 nav) */
   @media screen and (-webkit-min-device-pixel-ratio: 0) {
     header *,
-    nav *,
+    nav:not(.f4-nav) *,
     .text-white,
     [class*="text-white"] {
       color: #ffffff !important;
     }
     
-    /* Chrome-specific: Force all text white except Start Building */
+    /* Chrome-specific: Force all text white except Start Building and F4 nav */
     body * {
       color: #ffffff !important;
+    }
+    
+    /* Exception: Fantastic 4 nav text #0E4A80 (same block so later = wins) */
+    [data-fantastic-4-page] .f4-nav,
+    [data-fantastic-4-page] .f4-nav *,
+    [data-fantastic-4-page] .f4-nav-bar,
+    [data-fantastic-4-page] .f4-nav-bar * {
+      color: #0E4A80 !important;
     }
     
     /* Exception for Start Building button in Chrome */
@@ -222,8 +254,8 @@
     }
   }
   
-  /* Force navbar text white in all browsers */
-  .sticky.top-0.z-50 * {
+  /* Force navbar text white (only for sticky nav that is NOT Fantastic 4 nav) */
+  .sticky.top-0.z-50:not(.f4-nav) * {
     color: #ffffff !important;
   }
   
@@ -233,15 +265,42 @@
     background-color: #000000 !important;
   }
   
-  /* Force reload for Chrome */
+  /* Force reload for Chrome (F4 nav overridden below by unlayered rule) */
   @media screen and (-webkit-min-device-pixel-ratio: 0) {
     * {
       color: #ffffff !important;
+    }
+    /* Fantastic 4 nav must stay #0E4A80 — override * in this same block */
+    [data-fantastic-4-page] .f4-nav,
+    [data-fantastic-4-page] .f4-nav *,
+    [data-fantastic-4-page] .f4-nav-bar,
+    [data-fantastic-4-page] .f4-nav-bar * {
+      color: #0E4A80 !important;
     }
     .bg-black,
     a[href="/build-cycle"] {
       color: #ffffff !important;
       background-color: #000000 !important;
+    }
+    /* Fantastic 4: white buttons and cards use black text */
+    [data-fantastic-4-page] .f4-cta-button,
+    [data-fantastic-4-page] .f4-cta-button *,
+    [data-fantastic-4-page] .f4-timeline-node,
+    [data-fantastic-4-page] .f4-timeline-node *,
+    [data-fantastic-4-page] [data-slot="card"],
+    [data-fantastic-4-page] [data-slot="card"] * {
+      color: #000000 !important;
+    }
+    /* Fantastic 4 navbar: #0E4A80 text */
+    [data-fantastic-4-page] .f4-nav,
+    [data-fantastic-4-page] .f4-nav *,
+    [data-fantastic-4-page] .f4-nav-bar,
+    [data-fantastic-4-page] .f4-nav-bar *,
+    [data-fantastic-4-page] nav.f4-nav a,
+    [data-fantastic-4-page] nav.f4-nav a span,
+    [data-fantastic-4-page] nav.f4-nav button,
+    [data-fantastic-4-page] nav.f4-nav button span {
+      color: #0E4A80 !important;
     }
   }
 
@@ -289,9 +348,7 @@
     display: flex;
     width: fit-content;
   }
-  .animate-scroll:hover {
-    animation-play-state: paused;
-  }
+  /* No hover pause — click opens enlarged card instead */
 
   /* Background Ripple Effect Animation */
   @keyframes cell-ripple {
@@ -322,6 +379,20 @@
 [data-fantastic-4-page] {
   background: #158fd4;
   overflow-x: hidden;
+}
+
+/* Fantastic 4 navbar: force #0E4A80 text (override .sticky.top-0.z-50 * white) */
+[data-fantastic-4-page] .f4-nav,
+[data-fantastic-4-page] .f4-nav *,
+[data-fantastic-4-page] .f4-nav-bar,
+[data-fantastic-4-page] .f4-nav-bar *,
+[data-fantastic-4-page] nav.f4-nav a,
+[data-fantastic-4-page] nav.f4-nav a span,
+[data-fantastic-4-page] nav.f4-nav button,
+[data-fantastic-4-page] nav.f4-nav button span,
+[data-fantastic-4-page] .sticky.top-0.z-50.f4-nav *,
+[data-fantastic-4-page] .sticky.top-0.z-50 .f4-nav-bar * {
+  color: #0E4A80 !important;
 }
 
 /* Black git-contribution-style grid overlay — very small cells, animated */
@@ -361,33 +432,41 @@
   opacity: 1;
 }
 
-/* CTA buttons: black bg, white text */
-[data-fantastic-4-page] .f4-cta-button,
-[data-fantastic-4-page] .f4-cta-button * {
-  color: #ffffff !important;
-}
+/* CTA buttons: white bg, black text — override global white text */
 [data-fantastic-4-page] .f4-cta-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: #000000 !important;
+  background: #ffffff !important;
+  color: #000000 !important;
   font-family: "Audiowide", cursive;
   font-weight: 600;
   font-size: 0.875rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   padding: 0.75rem 1.5rem;
-  border: 2px solid #000000;
+  border: 2px solid #0E4A80;
+  outline: 2px solid #ffffff;
+  outline-offset: 0;
   border-radius: 0.5rem;
   transition: background 0.2s, color 0.2s, border-color 0.2s;
 }
-[data-fantastic-4-page] .f4-cta-button:hover,
-[data-fantastic-4-page] .f4-cta-button:hover * {
-  color: #ffffff !important;
-}
 [data-fantastic-4-page] .f4-cta-button:hover {
-  background: #1a1a1a !important;
-  border-color: #1a1a1a;
+  background: #f0f0f0 !important;
+  border-color: #0E4A80;
+  outline-color: #ffffff;
+  color: #000000 !important;
+}
+[data-fantastic-4-page] .f4-cta-button,
+[data-fantastic-4-page] .f4-cta-button *,
+[data-fantastic-4-page] .f4-cta-button span,
+[data-fantastic-4-page] .f4-cta-button a {
+  color: #000000 !important;
+}
+[data-fantastic-4-page] .f4-cta-button:hover,
+[data-fantastic-4-page] .f4-cta-button:hover *,
+[data-fantastic-4-page] .f4-cta-button:hover span {
+  color: #000000 !important;
 }
 @media (min-width: 640px) {
   [data-fantastic-4-page] .f4-cta-button { font-size: 0.9375rem; padding: 0.875rem 1.75rem; }
@@ -406,17 +485,43 @@
 }
 
 [data-fantastic-4-page] .f4-section--overview .f4-briefing-frame {
-  border: 2px solid #0e4a80;
-  box-shadow: inset 0 0 40px rgba(1, 5, 11, 0.2), 0 0 20px rgba(14, 74, 128, 0.2);
+  border: 2px solid #ffffff;
+  outline: 4px solid #0E4A80;
+  outline-offset: 0;
+  box-shadow: inset 0 0 0 2px #0E4A80, inset 0 0 40px rgba(1, 5, 11, 0.15), 0 0 24px rgba(14, 74, 128, 0.5), 0 0 48px rgba(14, 74, 128, 0.35);
 }
 
+[data-fantastic-4-page] .f4-timeline-title {
+  position: relative;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #ffffff;
+}
+[data-fantastic-4-page] .f4-timeline-title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  height: 2px;
+  background: #0E4A80;
+}
+/* Timeline scroll line: force white track + fill, #0E4A80 border */
+[data-fantastic-4-page] .f4-timeline-line-track,
+[data-fantastic-4-page] .f4-timeline-line-fill {
+  background: #ffffff !important;
+}
+[data-fantastic-4-page] .f4-timeline-line {
+  border-color: #0E4A80 !important;
+}
 [data-fantastic-4-page] .f4-section--timeline .f4-timeline-node {
   border-left: 3px solid #0e4a80;
   box-shadow: 0 0 12px rgba(14, 74, 128, 0.3);
 }
 
 [data-fantastic-4-page] .f4-section--problems [class*="Card"] {
-  border-left: 4px solid #0e4a80;
+  /* Use uniform border so partial cards at scroll edge don't show a thick bar */
+  border-width: 2px;
+  border-color: #0e4a80;
 }
 
 [data-fantastic-4-page] .f4-section--rules [class*="Card"] {
@@ -435,4 +540,174 @@
 
 [data-fantastic-4-page] .f4-section--faq [class*="Card"] {
   border-color: #0e4a80;
+}
+
+/* Cards and timeline nodes: white bg, black text — use data-slot and class so selectors match */
+[data-fantastic-4-page] .f4-timeline-node,
+[data-fantastic-4-page] .f4-section--problems [data-slot="card"],
+[data-fantastic-4-page] .f4-section--problems [class*="card"],
+[data-fantastic-4-page] .f4-section--rules [data-slot="card"],
+[data-fantastic-4-page] .f4-section--rules [class*="card"],
+[data-fantastic-4-page] .f4-section--hackathon [data-slot="card"],
+[data-fantastic-4-page] .f4-section--hackathon [class*="card"],
+[data-fantastic-4-page] .f4-section--faq [data-slot="card"],
+[data-fantastic-4-page] .f4-section--faq [class*="card"],
+[data-fantastic-4-page] .f4-section--contact [data-slot="card"],
+[data-fantastic-4-page] .f4-section--contact [class*="card"] {
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+[data-fantastic-4-page] .f4-timeline-node,
+[data-fantastic-4-page] .f4-timeline-node *,
+[data-fantastic-4-page] .f4-timeline-node p,
+[data-fantastic-4-page] .f4-timeline-node span,
+[data-fantastic-4-page] .f4-timeline-node div,
+[data-fantastic-4-page] .f4-timeline-node a,
+[data-fantastic-4-page] .f4-timeline-node h3,
+[data-fantastic-4-page] .f4-section--problems [data-slot="card"] *,
+[data-fantastic-4-page] .f4-section--problems [class*="card"] *,
+[data-fantastic-4-page] .f4-section--rules [data-slot="card"] *,
+[data-fantastic-4-page] .f4-section--rules [class*="card"] *,
+[data-fantastic-4-page] .f4-section--hackathon [data-slot="card"] *,
+[data-fantastic-4-page] .f4-section--hackathon [class*="card"] *,
+[data-fantastic-4-page] .f4-section--faq [data-slot="card"] *,
+[data-fantastic-4-page] .f4-section--faq [class*="card"] *,
+[data-fantastic-4-page] .f4-section--contact [data-slot="card"] *,
+[data-fantastic-4-page] .f4-section--contact [class*="card"] * {
+  color: #000000 !important;
+}
+[data-fantastic-4-page] .f4-section--problems [data-slot="card"] [class*="muted"],
+[data-fantastic-4-page] .f4-section--problems [class*="card"] [class*="muted"],
+[data-fantastic-4-page] .f4-section--rules [data-slot="card"] [class*="muted"],
+[data-fantastic-4-page] .f4-section--rules [class*="card"] [class*="muted"],
+[data-fantastic-4-page] .f4-section--faq [data-slot="card"] [class*="muted"],
+[data-fantastic-4-page] .f4-section--faq [class*="card"] [class*="muted"],
+[data-fantastic-4-page] .f4-section--contact [data-slot="card"] [class*="muted"],
+[data-fantastic-4-page] .f4-section--contact [class*="card"] [class*="muted"],
+[data-fantastic-4-page] .f4-timeline-node [class*="muted"] {
+  color: #374151 !important;
+}
+
+/* ===== Fantastic 4 — Mobile: keep all elements inside sections ===== */
+@media (max-width: 767px) {
+  [data-fantastic-4-page],
+  [data-fantastic-4-page] .relative.z-10 {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+  [data-fantastic-4-page] #hero,
+  [data-fantastic-4-page] .f4-section {
+    overflow-x: hidden;
+    overflow-y: visible;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  [data-fantastic-4-page] #hero *,
+  [data-fantastic-4-page] .f4-section * {
+    box-sizing: border-box;
+  }
+}
+
+/* ===== Fantastic 4 — Mobile app-style UI ===== */
+@supports (padding: env(safe-area-inset-top)) {
+  [data-fantastic-4-page] .f4-hero-mobile {
+    padding-top: env(safe-area-inset-top);
+  }
+  [data-fantastic-4-page] .f4-nav.sticky,
+  [data-fantastic-4-page] nav.sticky {
+    padding-top: max(0.5rem, env(safe-area-inset-top));
+    padding-left: max(0.75rem, env(safe-area-inset-left));
+    padding-right: max(0.75rem, env(safe-area-inset-right));
+  }
+  /* Fantastic 4 navbar: white bg, #0E4A80 border + white outline, all text #0E4A80 */
+  [data-fantastic-4-page] .f4-nav,
+  [data-fantastic-4-page] .f4-nav *,
+  [data-fantastic-4-page] .f4-nav-bar,
+  [data-fantastic-4-page] .f4-nav-bar * {
+    color: #0E4A80 !important;
+  }
+  [data-fantastic-4-page] .f4-nav button span[class*="block"] {
+    background-color: #0E4A80 !important;
+  }
+  [data-fantastic-4-page] .f4-section {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+  [data-fantastic-4-page] .f4-section {
+    padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+  }
+}
+
+/* Touch targets: min 44px for primary actions (mobile) */
+@media (max-width: 767px) {
+  [data-fantastic-4-page] .f4-cta-button,
+  [data-fantastic-4-page] .f4-hero-ctas a {
+    min-height: 44px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+  [data-fantastic-4-page] .f4-section {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+  [data-fantastic-4-page] .f4-section--overview,
+  [data-fantastic-4-page] .f4-section--timeline,
+  [data-fantastic-4-page] .f4-section--problems,
+  [data-fantastic-4-page] .f4-section--rules,
+  [data-fantastic-4-page] .f4-section--registration,
+  [data-fantastic-4-page] .f4-section--hackathon,
+  [data-fantastic-4-page] .f4-section--faq,
+  [data-fantastic-4-page] .f4-section--contact {
+    padding-top: 2rem;
+    padding-bottom: max(2rem, env(safe-area-inset-bottom, 0));
+  }
+  /* Section cards: app-like padding and radius (mobile) */
+  [data-fantastic-4-page] .f4-section--overview .f4-briefing-frame {
+    padding: 1.25rem;
+    border-radius: 1rem;
+  }
+  [data-fantastic-4-page] .f4-section--timeline .f4-timeline-node {
+    border-radius: 1rem;
+    padding: 1rem;
+  }
+  [data-fantastic-4-page] .f4-section--rules [class*="Card"],
+  [data-fantastic-4-page] .f4-section--problems [class*="Card"],
+  [data-fantastic-4-page] .f4-section--faq [class*="Card"],
+  [data-fantastic-4-page] .f4-section--contact [class*="Card"] {
+    border-radius: 1rem;
+  }
+  [data-fantastic-4-page] .f4-section--rules [class*="Card"] [class*="CardHeader"],
+  [data-fantastic-4-page] .f4-section--rules [class*="Card"] [class*="CardContent"],
+  [data-fantastic-4-page] .f4-section--faq [class*="Card"] [class*="CardHeader"],
+  [data-fantastic-4-page] .f4-section--faq [class*="Card"] [class*="CardContent"],
+  [data-fantastic-4-page] .f4-section--contact [class*="Card"] [class*="CardContent"] {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* Fantastic 4 navbar text — final override so #0E4A80 wins over global white */
+body [data-fantastic-4-page] .f4-nav,
+body [data-fantastic-4-page] .f4-nav *,
+body [data-fantastic-4-page] .f4-nav-bar,
+body [data-fantastic-4-page] .f4-nav-bar * {
+  color: #0E4A80 !important;
+}
+
+/* Fantastic 4 navbar — scrollable links when space is tight, no cut-off */
+[data-fantastic-4-page] .f4-nav-links {
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #0E4A80 rgba(14, 74, 128, 0.2);
+}
+[data-fantastic-4-page] .f4-nav-links::-webkit-scrollbar {
+  height: 4px;
+}
+[data-fantastic-4-page] .f4-nav-links::-webkit-scrollbar-track {
+  background: rgba(14, 74, 128, 0.1);
+  border-radius: 4px;
+}
+[data-fantastic-4-page] .f4-nav-links::-webkit-scrollbar-thumb {
+  background: #0E4A80;
+  border-radius: 4px;
 }

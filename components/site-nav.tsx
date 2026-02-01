@@ -83,15 +83,6 @@ export default function SiteNav() {
                   </li>
                 )
               })}
-              <li className="ml-1 flex flex-shrink-0">
-                <Link
-                  href="/start-building"
-                  onClick={() => handleNavClick('/start-building')}
-                  className="inline-flex h-9 items-center rounded-full bg-black px-3 text-sm font-medium text-white hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap"
-                >
-                  Register Now!
-                </Link>
-              </li>
             </ul>
 
             {/* Mobile Hamburger Button */}
@@ -165,20 +156,6 @@ export default function SiteNav() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   </button>
-                </div>
-
-                {/* Sticky CTA at top for quick access */}
-                <div className="sticky top-0 z-10 bg-card/95 backdrop-blur border-b border-[color:var(--border)] p-4">
-                  <Link
-                    href="/start-building"
-                    onClick={() => {
-                      handleNavClick('/start-building')
-                      closeMenu()
-                    }}
-                    className="w-full inline-flex items-center justify-center rounded-lg bg-black px-4 py-3 text-base font-medium text-white hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-ring transition-colors"
-                  >
-                    Register Now!
-                  </Link>
                 </div>
 
                 {/* Navigation Links */}
