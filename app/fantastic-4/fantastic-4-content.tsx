@@ -535,7 +535,7 @@ export default function Fantastic4Page() {
                   <Link href="/" className="flex items-center justify-center flex-shrink-0 min-h-[44px] min-w-[44px] py-2 hover:opacity-80 active:opacity-90 transition-opacity rounded-lg" style={{ color: "#0E4A80" }} aria-label="Back to Home">
                     <Home className="h-5 w-5 md:h-6 md:w-6" style={{ color: "#0E4A80" }} />
                   </Link>
-                  <div className="hidden md:flex items-center gap-1 flex-1 min-w-0 justify-center overflow-x-auto overflow-y-hidden py-1 f4-nav-links">
+                  <div className="hidden lg:flex items-center gap-1 flex-1 min-w-0 justify-center overflow-x-auto overflow-y-hidden py-1 f4-nav-links">
                     {navItems.map((item) => {
                       const isActive = activeSection === item.id
                       return (
@@ -639,7 +639,7 @@ export default function Fantastic4Page() {
       {/* Single scrollable page - one column, fixed background behind all content */}
       <div className="relative z-10 bg-transparent overflow-x-hidden max-w-full w-full" style={{ isolation: "isolate" }}>
         {/* Hero section — Mobile: stacked (content → CTAs → Herbie). Desktop: Herbie left, content right; Herbie bottom aligns with button row. */}
-        <div id="hero" className="relative flex flex-col md:flex-row items-stretch md:items-end min-h-[85vh] md:min-h-[90vh] w-full max-w-full overflow-hidden f4-hero-mobile box-border gap-0">
+        <div id="hero" className="relative flex flex-col md:flex-row items-stretch md:items-start min-h-[85vh] md:min-h-[90vh] w-full max-w-full overflow-hidden f4-hero-mobile box-border gap-0">
           {/* Mobile: Herbie at bottom (order-3), right beside buttons. Desktop: left column, Herbie top aligns with button row. */}
           <div className="order-3 md:order-none flex-shrink-0 w-full md:w-[28%] md:min-w-[100px] md:max-w-[280px] lg:max-w-[320px] xl:max-w-[360px] 2xl:max-w-[380px] flex flex-col items-center justify-end md:justify-end pl-0 pr-0 md:pl-3 lg:pl-4 self-stretch min-h-0 md:min-h-0 max-h-[22vh] md:max-h-none overflow-hidden -mt-1 md:mt-0">
             {/* Our sponsors — above Herbie only; pushed down from navbar, mobile-friendly */}
@@ -682,8 +682,8 @@ export default function Fantastic4Page() {
               aria-hidden
             />
           </div>
-          {/* Content block — Mobile: order-1 (top). Desktop: right column. min-w-0 so flex can shrink. */}
-          <div className="order-1 flex-1 flex flex-col items-center justify-center min-h-0 min-w-0 py-4 sm:py-6 md:py-10 lg:py-12 xl:py-14 px-6 sm:px-8 md:px-10 lg:px-12 xl:px-16 2xl:px-20 max-w-full overflow-hidden gap-2 sm:gap-3 md:gap-4 lg:gap-5">
+          {/* Content block — Mobile: order-1 (top). Desktop: right column; same top padding as Our sponsors so Buildit × Unstop aligns. */}
+          <div className="order-1 flex-1 flex flex-col items-center justify-start min-h-0 min-w-0 pt-5 sm:pt-6 md:pt-8 pb-4 sm:pb-6 md:pb-10 lg:pb-12 xl:pb-14 px-6 sm:px-8 md:px-10 lg:px-12 xl:px-16 2xl:px-20 max-w-full overflow-hidden gap-2 sm:gap-3 md:gap-4 lg:gap-5">
             {/* Buildit × Unstop only — Our sponsors moved above Herbie */}
             <div className="flex-shrink-0 flex items-center justify-center gap-3 sm:gap-4 md:gap-5 lg:gap-6 w-full">
               <Image

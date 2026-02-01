@@ -694,11 +694,51 @@ body [data-fantastic-4-page] .f4-nav-bar * {
   color: #0E4A80 !important;
 }
 
-/* Fantastic 4 navbar — scrollable links when space is tight, no cut-off */
+/* Fantastic 4 navbar — hide nav links on mobile/tablet (hamburger only below lg) */
+@media (max-width: 1023px) {
+  [data-fantastic-4-page] .f4-nav-links {
+    display: none !important;
+  }
+}
+
+/* Fantastic 4 navbar — keep buttons inside bar (Safari fix) */
+[data-fantastic-4-page] .f4-nav {
+  width: 100%;
+  max-width: 100vw;
+  box-sizing: border-box;
+}
+[data-fantastic-4-page] .f4-nav .mx-auto {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+[data-fantastic-4-page] .f4-nav-bar {
+  display: flex;
+  display: -webkit-flex;
+  -webkit-box-align: center;
+  align-items: center;
+  overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
 [data-fantastic-4-page] .f4-nav-links {
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
   scrollbar-color: #0E4A80 rgba(14, 74, 128, 0.2);
+  /* Safari: allow flex child to shrink and contain content inside bar */
+  min-width: 0;
+  flex: 1 1 auto;
+  -webkit-flex: 1 1 auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-box-flex: 1;
+  max-width: 100%;
+  display: flex;
+  display: -webkit-flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  flex-wrap: nowrap;
 }
 [data-fantastic-4-page] .f4-nav-links::-webkit-scrollbar {
   height: 4px;

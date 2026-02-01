@@ -116,7 +116,7 @@ export function Fantastic4MobileMenu({
       {/* Mobile Hamburger Button — 44px min touch target */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="md:hidden flex flex-col items-center justify-center min-w-[44px] min-h-[44px] w-11 h-11 -my-1 -mr-1 space-y-1 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-transparent rounded-xl active:opacity-80 transition-opacity"
+        className="lg:hidden flex flex-col items-center justify-center min-w-[44px] min-h-[44px] w-11 h-11 -my-1 -mr-1 space-y-1 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-transparent rounded-xl active:opacity-80 transition-opacity"
         aria-label="Toggle menu"
       >
         <motion.span
@@ -157,7 +157,7 @@ export function Fantastic4MobileMenu({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm md:hidden"
+              className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden"
               onClick={() => setIsOpen(false)}
             />
             
@@ -179,9 +179,9 @@ export function Fantastic4MobileMenu({
                   navContainerRef.current.scrollTop = 0
                 }
               }}
-              className="fixed top-0 right-0 z-50 h-screen w-80 max-w-[85vw] md:hidden overflow-hidden touch-none rounded-l-2xl shadow-2xl border-l border-white/20"
+              className="fixed top-0 right-0 z-50 h-screen w-80 max-w-[85vw] lg:hidden overflow-hidden touch-none rounded-l-2xl shadow-2xl border-l border-white/20"
               style={{ 
-                backgroundColor: 'rgba(1, 5, 11, 0.98)',
+                backgroundColor: '#158fd4',
                 overscrollBehavior: 'none', 
                 marginTop: 0, 
                 marginRight: 0,
@@ -192,7 +192,7 @@ export function Fantastic4MobileMenu({
             >
               <div className="flex flex-col h-full overflow-hidden">
                 {/* Drawer Header — safe area and touch targets */}
-                <div className="flex items-center justify-between p-4 pt-[max(1rem,env(safe-area-inset-top))] border-b border-white/10 flex-shrink-0 rounded-tl-2xl">
+                <div className="flex items-center justify-between p-4 pt-[max(1rem,env(safe-area-inset-top))] border-b border-white/20 flex-shrink-0 rounded-tl-2xl">
                   <Link 
                     href="/" 
                     className="font-semibold tracking-tight text-white"
@@ -203,7 +203,7 @@ export function Fantastic4MobileMenu({
                   </Link>
                   <button
                     onClick={() => setIsOpen(false)}
-                    className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl hover:bg-background/60 active:opacity-80 transition-colors"
+                    className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl hover:bg-white/20 active:opacity-80 transition-colors text-white"
                     aria-label="Close menu"
                   >
                     <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -236,25 +236,25 @@ export function Fantastic4MobileMenu({
                           <button
                             onClick={() => handleNavClick(item.id)}
                             className={cn(
-                              "flex items-center w-full min-h-[44px] px-4 py-3 rounded-xl text-base font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-ring active:opacity-90",
+                              "flex items-center w-full min-h-[44px] px-4 py-3 rounded-xl text-base font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-white/50 active:opacity-90 text-white",
                               isActive 
-                                ? "bg-background text-foreground" 
-                                : "text-muted-foreground hover:text-foreground hover:bg-background/60"
+                                ? "bg-white/20" 
+                                : "hover:bg-white/15"
                             )}
                             style={{ fontFamily: '"Audiowide", cursive' }}
                           >
                             {item.showBadge && (
-                              <span className="flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold flex-shrink-0 mr-3" style={{ backgroundColor: 'rgba(14,74,128,0.4)', border: '1px solid #0e4a80', color: '#ffffff' }}>
+                              <span className="flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold flex-shrink-0 mr-3 text-white" style={{ backgroundColor: 'rgba(14,74,128,0.5)', border: '1px solid rgba(255,255,255,0.5)' }}>
                                 4
                               </span>
                             )}
                             {item.isLive && (
                               <span className="relative flex items-center gap-1.5 flex-shrink-0 mr-3">
                                 <span className="relative flex h-2 w-2">
-                                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ backgroundColor: '#158fd4' }}></span>
-                                  <span className="relative inline-flex rounded-full h-2 w-2" style={{ backgroundColor: '#0e4a80' }}></span>
+                                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-white"></span>
+                                  <span className="relative inline-flex rounded-full h-2 w-2 bg-white/90"></span>
                                 </span>
-                                <span className="text-xs font-bold animate-pulse" style={{ color: '#9daecc' }}>
+                                <span className="text-xs font-bold animate-pulse text-white">
                                   LIVE
                                 </span>
                               </span>
