@@ -4,11 +4,14 @@ export const StardustButton = ({
   children = "Launching Soon", 
   onClick, 
   className = "",
+  style: styleProp,
+  variant = "default", // "default" (blue) | "black"
   ...props 
 }) => {
+  const isBlack = variant === "black";
   const buttonStyle = {
-    '--white': '#e6f3ff',
-    '--bg': '#0a1929',
+    '--white': isBlack ? '#f5f5f5' : '#e6f3ff',
+    '--bg': isBlack ? '#000' : '#0a1929',
     '--radius': '100px',
     outline: 'none',
     cursor: 'pointer',
@@ -17,7 +20,14 @@ export const StardustButton = ({
     borderRadius: 'var(--radius)',
     backgroundColor: 'var(--bg)',
     transition: 'all 0.2s ease',
-    boxShadow: `
+    boxShadow: isBlack
+      ? `
+      inset 0 0.3rem 0.9rem rgba(255, 255, 255, 0.15),
+      inset 0 -0.1rem 0.3rem rgba(0, 0, 0, 0.5),
+      0 3rem 3rem rgba(0, 0, 0, 0.3),
+      0 1rem 1rem -0.6rem rgba(0, 0, 0, 0.6)
+    `
+      : `
       inset 0 0.3rem 0.9rem rgba(255, 255, 255, 0.3),
       inset 0 -0.1rem 0.3rem rgba(0, 0, 0, 0.7),
       inset 0 -0.4rem 0.9rem rgba(255, 255, 255, 0.5),
@@ -29,7 +39,7 @@ export const StardustButton = ({
   const wrapStyle = {
     fontSize: '25px',
     fontWeight: 500,
-    color: 'rgba(129, 216, 255, 0.9)',
+    color: isBlack ? 'rgba(255, 255, 255, 0.95)' : 'rgba(129, 216, 255, 0.9)',
     padding: '32px 45px',
     borderRadius: 'inherit',
     position: 'relative',
@@ -43,7 +53,9 @@ export const StardustButton = ({
     margin: 0,
     transition: 'all 0.2s ease',
     transform: 'translateY(2%)',
-    maskImage: 'linear-gradient(to bottom, rgba(129, 216, 255, 1) 40%, transparent)',
+    maskImage: isBlack
+      ? 'linear-gradient(to bottom, rgba(255, 255, 255, 1) 40%, transparent)'
+      : 'linear-gradient(to bottom, rgba(129, 216, 255, 1) 40%, transparent)',
   };
 
   const beforeAfterStyles = `
@@ -121,14 +133,42 @@ export const StardustButton = ({
         0 3rem 3rem rgba(0, 0, 0, 0.3),
         0 1rem 1rem -0.6rem rgba(0, 0, 0, 0.8);
     }
+    
+    /* Black variant: no blue, white/neutral accents only */
+    .pearl-button.pearl-button-black .wrap::before {
+      background-color: rgba(255, 255, 255, 0.08);
+    }
+    .pearl-button.pearl-button-black .wrap::after {
+      box-shadow: inset 0 10px 8px -10px rgba(255, 255, 255, 0.25);
+      background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.12) 0%,
+        rgba(0, 0, 0, 0) 50%,
+        rgba(0, 0, 0, 0) 100%
+      );
+    }
+    .pearl-button.pearl-button-black:hover {
+      box-shadow:
+        inset 0 0.3rem 0.5rem rgba(255, 255, 255, 0.12),
+        inset 0 -0.1rem 0.3rem rgba(0, 0, 0, 0.6),
+        0 3rem 3rem rgba(0, 0, 0, 0.3),
+        0 1rem 1rem -0.6rem rgba(0, 0, 0, 0.6);
+    }
+    .pearl-button.pearl-button-black:active {
+      box-shadow:
+        inset 0 0.3rem 0.5rem rgba(255, 255, 255, 0.1),
+        inset 0 -0.1rem 0.3rem rgba(0, 0, 0, 0.7),
+        0 3rem 3rem rgba(0, 0, 0, 0.3),
+        0 1rem 1rem -0.6rem rgba(0, 0, 0, 0.6);
+    }
   `;
 
   return (
     <>
       <style>{beforeAfterStyles}</style>
       <button
-        className={`pearl-button ${className}`}
-        style={buttonStyle}
+        className={`pearl-button ${isBlack ? 'pearl-button-black ' : ''}${className}`}
+        style={{ ...buttonStyle, ...styleProp }}
         onClick={onClick}
         {...props}
       >

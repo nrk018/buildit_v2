@@ -317,3 +317,122 @@
     mask-position: center top;
   }
 }
+
+/* ===== Fantastic 4 — Palette: #158fd4 (blue bg), #ffffff (text), #01050b (dark), #0e4a80, #9daecc ===== */
+[data-fantastic-4-page] {
+  background: #158fd4;
+  overflow-x: hidden;
+}
+
+/* Black git-contribution-style grid overlay — very small cells, animated */
+.f4-grid-overlay {
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.2) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.2) 1px, transparent 1px);
+  background-size: 8px 8px;
+  background-position: 0 0;
+  animation: f4-grid-motion 24s linear infinite;
+}
+@keyframes f4-grid-motion {
+  0% { background-position: 0 0; opacity: 0.9; }
+  50% { opacity: 1; }
+  100% { background-position: 8px 8px; opacity: 0.9; }
+}
+
+[data-fantastic-4-page] .f4-section,
+[data-fantastic-4-page] .f4-section--overview,
+[data-fantastic-4-page] .f4-section--timeline,
+[data-fantastic-4-page] .f4-section--problems,
+[data-fantastic-4-page] .f4-section--rules,
+[data-fantastic-4-page] .f4-section--registration,
+[data-fantastic-4-page] .f4-section--hackathon,
+[data-fantastic-4-page] .f4-section--faq,
+[data-fantastic-4-page] .f4-section--contact {
+  background: #158fd4 !important;
+}
+
+[data-fantastic-4-page] {
+  /* Text: white; muted: light blue */
+  color: #ffffff;
+}
+[data-fantastic-4-page] .text-muted-foreground,
+[data-fantastic-4-page] [class*="text-muted"] {
+  color: #9daecc !important;
+  opacity: 1;
+}
+
+/* CTA buttons: black bg, white text */
+[data-fantastic-4-page] .f4-cta-button,
+[data-fantastic-4-page] .f4-cta-button * {
+  color: #ffffff !important;
+}
+[data-fantastic-4-page] .f4-cta-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #000000 !important;
+  font-family: "Audiowide", cursive;
+  font-weight: 600;
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid #000000;
+  border-radius: 0.5rem;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+[data-fantastic-4-page] .f4-cta-button:hover,
+[data-fantastic-4-page] .f4-cta-button:hover * {
+  color: #ffffff !important;
+}
+[data-fantastic-4-page] .f4-cta-button:hover {
+  background: #1a1a1a !important;
+  border-color: #1a1a1a;
+}
+@media (min-width: 640px) {
+  [data-fantastic-4-page] .f4-cta-button { font-size: 0.9375rem; padding: 0.875rem 1.75rem; }
+}
+@media (min-width: 768px) {
+  [data-fantastic-4-page] .f4-cta-button { font-size: 1rem; padding: 1rem 2rem; }
+}
+@media (min-width: 1024px) {
+  [data-fantastic-4-page] .f4-cta-button { font-size: 1.0625rem; padding: 1.125rem 2.25rem; }
+}
+@media (min-width: 1280px) {
+  [data-fantastic-4-page] .f4-cta-button { font-size: 1.125rem; padding: 1.25rem 2.5rem; }
+}
+@media (min-width: 1536px) {
+  [data-fantastic-4-page] .f4-cta-button { font-size: 1.25rem; padding: 1.375rem 2.75rem; }
+}
+
+[data-fantastic-4-page] .f4-section--overview .f4-briefing-frame {
+  border: 2px solid #0e4a80;
+  box-shadow: inset 0 0 40px rgba(1, 5, 11, 0.2), 0 0 20px rgba(14, 74, 128, 0.2);
+}
+
+[data-fantastic-4-page] .f4-section--timeline .f4-timeline-node {
+  border-left: 3px solid #0e4a80;
+  box-shadow: 0 0 12px rgba(14, 74, 128, 0.3);
+}
+
+[data-fantastic-4-page] .f4-section--problems [class*="Card"] {
+  border-left: 4px solid #0e4a80;
+}
+
+[data-fantastic-4-page] .f4-section--rules [class*="Card"] {
+  border-color: #0e4a80;
+  box-shadow: 0 4px 24px rgba(1, 5, 11, 0.2);
+}
+
+[data-fantastic-4-page] .f4-section--registration .f4-step-number {
+  box-shadow: 0 0 16px rgba(14, 74, 128, 0.4);
+}
+
+[data-fantastic-4-page] .f4-section--hackathon [class*="Card"] {
+  border-color: #0e4a80;
+  box-shadow: inset 0 0 60px rgba(1, 5, 11, 0.3);
+}
+
+[data-fantastic-4-page] .f4-section--faq [class*="Card"] {
+  border-color: #0e4a80;
+}
