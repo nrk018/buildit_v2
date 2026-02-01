@@ -12,6 +12,6 @@ export default function robots(): MetadataRoute.Robots {
         '/static/',
       ],
     },
-    sitemap: 'https://buildit-muj.vercel.app/sitemap.xml', // Replace with your actual domain
+    sitemap: 'https://builditmuj.club/sitemap.xml',
   }
 }

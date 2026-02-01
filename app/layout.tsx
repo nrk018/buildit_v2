@@ -14,15 +14,17 @@ const bitcount = localFont({
   display: "swap",
 })
 
+const siteUrl = 'https://builditmuj.club'
+
 export const metadata: Metadata = {
   title: {
     default: "BuildIt — MUJ Builder Club | Student Development Platform",
     template: "%s | BuildIt — MUJ Builder Club"
   },
-  description: "BuildIt is a comprehensive student development platform at Manipal University Jaipur. Join our builder club for project-centric learning, mentorship from industry experts, and hands-on experience in AI, Robotics, Web Development, and more.",
+  description: "A builder club at Manipal University Jaipur — where students build real-world projects, learn from industry experts, and ship innovative solutions.",
   keywords: [
     "BuildIt",
-    "MUJ Builder Club", 
+    "MUJ Builder Club",
     "Manipal University Jaipur",
     "Student Development",
     "Project Learning",
@@ -37,7 +39,7 @@ export const metadata: Metadata = {
     "Tech Education",
     "Project Management"
   ],
-  authors: [{ name: "BuildIt — MUJ Builder Club" }],
+  authors: [{ name: "BuildIt — MUJ Builder Club", url: siteUrl }],
   creator: "BuildIt — MUJ Builder Club",
   publisher: "Manipal University Jaipur",
   formatDetection: {
@@ -45,16 +47,21 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://buildit-muj.vercel.app'), // Replace with your actual domain
+  metadataBase: new URL(siteUrl),
   alternates: {
     canonical: '/',
+  },
+  icons: {
+    icon: '/images/builditlogo.png',
+    shortcut: '/images/builditlogo.png',
+    apple: '/images/builditlogo.png',
   },
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://buildit-muj.vercel.app', // Replace with your actual domain
+    url: siteUrl,
     title: 'BuildIt — MUJ Builder Club | Student Development Platform',
-    description: 'Join BuildIt, the premier student development platform at Manipal University Jaipur. Experience project-centric learning with industry mentorship in AI, Robotics, Web Development, and more.',
+    description: 'A builder club at Manipal University Jaipur — where students build real-world projects, learn from industry experts, and ship innovative solutions.',
     siteName: 'BuildIt — MUJ Builder Club',
     images: [
       {
@@ -68,9 +75,9 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'BuildIt — MUJ Builder Club | Student Development Platform',
-    description: 'Join BuildIt, the premier student development platform at Manipal University Jaipur. Experience project-centric learning with industry mentorship.',
+    description: 'A builder club at Manipal University Jaipur — where students build real-world projects, learn from industry experts, and ship innovative solutions.',
     images: ['/images/builditlogo.png'],
-    creator: '@buildit_muj', // Replace with your actual Twitter handle
+    creator: '@buildit_muj',
   },
   robots: {
     index: true,
@@ -84,8 +91,9 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: 'your-google-verification-code', // Add your Google Search Console verification code
+    google: 'your-google-verification-code',
   },
+  category: 'education',
 }
 
 export default function RootLayout({
@@ -98,8 +106,8 @@ export default function RootLayout({
     "@type": "Organization",
     "name": "BuildIt — MUJ Builder Club",
     "description": "A comprehensive student development platform at Manipal University Jaipur focused on project-centric learning and industry mentorship.",
-    "url": "https://buildit-muj.vercel.app",
-    "logo": "https://buildit-muj.vercel.app/images/builditlogo.png",
+    "url": siteUrl,
+    "logo": `${siteUrl}/images/builditlogo.png`,
     "foundingDate": "2024",
     "address": {
       "@type": "PostalAddress",
@@ -130,6 +138,8 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${bitcount.variable} dark antialiased`}>
       <head>
+        <link rel="icon" href="/images/builditlogo.png" type="image/png" sizes="any" />
+        <link rel="apple-touch-icon" href="/images/builditlogo.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap" rel="stylesheet" />
