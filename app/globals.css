@@ -146,6 +146,11 @@
     font-family: "Audiowide", cursive !important;
     color: #ffffff !important;
   }
+  /* Exception: announcement banner uses blue text on white */
+  [data-fantastic-4-page] .f4-banner,
+  [data-fantastic-4-page] .f4-banner * {
+    color: #0E4A80 !important;
+  }
   /* Exception: white buttons and cards on Fantastic 4 use black text */
   [data-fantastic-4-page] .f4-cta-button,
   [data-fantastic-4-page] .f4-cta-button *,

@@ -5,6 +5,7 @@ import type React from "react"
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import Image from "next/image"
+import Link from "next/link"
 import { cn } from "@/lib/utils"
 
 const domains = [
@@ -147,10 +148,13 @@ export default function AboutPage() {
         </Card>
       </section>
 
-      <section className="mt-12">
-        <h2 className="text-2xl font-semibold" style={{ fontFamily: "var(--font-space-grotesk)" }}>
+      <section className="mt-12" aria-labelledby="domains-heading">
+        <h2 id="domains-heading" className="text-2xl font-semibold" style={{ fontFamily: "var(--font-space-grotesk)" }}>
           Domains
         </h2>
+        <p className="mt-2 text-sm text-muted-foreground max-w-2xl">
+          BuildIt focuses on AI & Data Science, Robotics, Web & App Development, and more. Our events and projects span these areas.
+        </p>
         <div className="mt-6 grid gap-4 sm:grid-cols-2 md:grid-cols-3">
           {domains.map((d) => (
             <div
@@ -161,6 +165,12 @@ export default function AboutPage() {
             </div>
           ))}
         </div>
+        <p className="mt-4 text-sm text-muted-foreground">
+          <Link href="/fantastic-4" className="font-medium text-primary underline-offset-4 hover:underline">
+            Join Fantastic 4
+          </Link>
+          {" "}— our Ideathon × Hackathon — to build real-world prototypes in these domains.
+        </p>
       </section>
 
       <section className="mt-16">

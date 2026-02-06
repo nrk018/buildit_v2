@@ -38,6 +38,12 @@ import { Fantastic4MobileMenu } from "@/components/fantastic-4-mobile-menu"
 
 const PITCH_DECK_REPO_URL = "https://github.com/nrk018/buildit_presentation"
 
+const bannerMessages = [
+  "Important update: Hackathon dates have been shifted to 13–14 February due to logistical reasons.",
+  "Heads up: Hackathon now runs on 13–14 February (moved from earlier dates) because of logistics.",
+  "Note: Please plan accordingly — Hackathon will now be held on 13–14 February due to logistic issues."
+]
+
 const domains = [
   { icon: Globe, name: "Web Development", color: "text-blue-400" },
   { icon: Smartphone, name: "Mobile Development", color: "text-green-400" },
@@ -58,46 +64,46 @@ type TimelineItem = {
 
 const timeline: TimelineItem[] = [
   {
-    date: "1st-5th Feb",
+    date: "1st–12th Feb",
     title: "Ideathon Phase",
-    subtitle: "Mon-Fri",
-    description: "Students ideate on a project with 4 MVP features",
+    subtitle: "Ideathon: 1st–12th Feb",
+    description: "Students ideate on a project with 4 MVP features and prepare their pitch deck",
     details: [
       "Each idea must include 4 MVP features",
       "MVPs evaluated based on viability",
       "Evaluation criteria: innovation, feasibility, clarity, scalability",
-      "Build your pitch deck: fork the template repo, update content, fix errors, create a branch & PR, and deploy on Vercel"
+      "Build your pitch deck: fork the template repo, update content, fix errors, create a branch & PR, and deploy on Vercel",
+      "Submit your pitch deck before the ideathon deadline on 12th February, 9:00 AM"
     ],
     color: "border-blue-500/50 bg-blue-500/5",
     icon: Lightbulb,
     iconColor: "text-blue-400"
   },
   {
-    date: "6th Feb",
-    title: "Ideathon Results & Hackathon Day",
-    subtitle: "Results + 5:00 PM - 5:30 AM",
-    description: "Ideathon results, then event starts with Treasure Hunt + What's The Word, followed by hackathon",
+    date: "13th–14th Feb",
+    title: "Hackathon Weekend",
+    subtitle: "Hackathon: 13th–14th Feb",
+    description: "Overnight hackathon with Treasure Hunt, What's The Word, and intensive build sprint",
     details: [
-      "Ideathon results announced",
-      "5:00 PM - Event starts",
-      "Treasure Hunt + What's The Word",
-      "9:00 PM - Hackathon begins",
-      "Those without ideas will ideate between 5 PM-9 PM",
-      "MVP development time: 9:30 PM-5:30 AM"
+      "Shortlisting and team onboarding for hackathon",
+      "Treasure Hunt + What's The Word to kick things off",
+      "Overnight hackathon sprint on your MVP",
+      "Mentor check-ins and feedback during the build",
+      "Prepare for final pitching on 14th February"
     ],
     color: "border-purple-500/50 bg-purple-500/5",
     icon: Code,
     iconColor: "text-purple-400"
   },
   {
-    date: "7th Feb",
+    date: "14th Feb",
     title: "Final Pitching & Winners",
-    subtitle: "9:00 AM - 6:00 PM",
+    subtitle: "Final pitching & results",
     description: "Final pitching for top teams and winner announcement",
     details: [
-      "9:00 AM - Final pitching for top teams",
-      "12:00 PM - Pitching ends",
-      "6:00 PM - Winners announced"
+      "Final pitching for top hackathon teams",
+      "Jury Q&A and feedback",
+      "Winners announced and prizes awarded"
     ],
     color: "border-green-500/50 bg-green-500/5",
     icon: Presentation,
@@ -364,11 +370,11 @@ const faqs = [
   },
   {
     question: "How do I submit my pitch deck (ideathon)?",
-    answer: "Fork the pitch deck template repo, update it with your project (problems, solution, MVP, video, feedback form link), fix errors, create a branch and open a PR, then deploy on Vercel. Submit your pitch deck (Vercel URL) through the submission form before the deadline (6th February 2025, 9 AM)."
+    answer: "Fork the pitch deck template repo, update it with your project (problems, solution, MVP, video, feedback form link), fix errors, create a branch and open a PR, then deploy on Vercel. Submit your pitch deck (Vercel URL) through the submission form before the deadline (12th February 2026, 9 AM)."
   },
   {
     question: "Do I need to have an idea before the event?",
-    answer: "While having an idea beforehand is helpful, you can also ideate during the event. There's dedicated time on 6th Feb (5 PM-9 PM) for teams without ideas to brainstorm."
+    answer: "While having an idea beforehand is helpful, you can also ideate during the event. You’ll have plenty of time during the ideathon phase (1st–12th Feb) to brainstorm and refine ideas with your team."
   },
   {
     question: "What if I'm new to hackathons?",
@@ -385,9 +391,18 @@ export default function Fantastic4Page() {
   const [selectedProblem, setSelectedProblem] = useState<ProblemStatement | null>(null)
   const [mobileProblemIndex, setMobileProblemIndex] = useState(0)
   const [isMounted, setIsMounted] = useState(false)
+  const [bannerIndex, setBannerIndex] = useState(0)
 
   useEffect(() => {
     setIsMounted(true)
+  }, [])
+
+  // Rotating banner for hackathon date change
+  useEffect(() => {
+    const id = setInterval(() => {
+      setBannerIndex((prev) => (prev + 1) % bannerMessages.length)
+    }, 5000)
+    return () => clearInterval(id)
   }, [])
 
   // Mobile: rotate problem card every 5 seconds
@@ -398,9 +413,9 @@ export default function Fantastic4Page() {
     return () => clearInterval(id)
   }, [])
 
-  // Countdown timer for Ideathon (pitch deck due 6th February 2026, 9 AM)
+  // Countdown timer for Ideathon (pitch deck due 12th February 2026, 9 AM)
   useEffect(() => {
-    const targetDate = new Date('2026-02-06T09:00:00').getTime()
+    const targetDate = new Date('2026-02-12T09:00:00').getTime()
     
     const updateCountdown = () => {
       const now = new Date().getTime()
@@ -638,6 +653,10 @@ export default function Fantastic4Page() {
       <div className="f4-nav-spacer h-16 md:h-20 flex-shrink-0" aria-hidden />
       {/* Single scrollable page - one column, fixed background behind all content */}
       <div className="relative z-10 bg-transparent overflow-x-hidden max-w-full w-full" style={{ isolation: "isolate" }}>
+        {/* Rotating announcement banner about hackathon date change */}
+        <div className="f4-banner w-full bg-white/95 text-[#0e4a80] px-4 py-2 text-xs sm:text-sm md:text-base font-medium shadow-md flex items-center justify-center text-center">
+          <span>{bannerMessages[bannerIndex]}</span>
+        </div>
         {/* Hero section — Mobile: stacked (content → CTAs → Herbie). Desktop: Herbie left, content right; Herbie bottom aligns with button row. */}
         <div id="hero" className="relative flex flex-col md:flex-row items-stretch md:items-start min-h-[85vh] md:min-h-[90vh] w-full max-w-full overflow-hidden f4-hero-mobile box-border gap-0">
           {/* Mobile: Herbie at bottom (order-3), right beside buttons. Desktop: left column, Herbie top aligns with button row. */}
@@ -652,7 +671,7 @@ export default function Fantastic4Page() {
               </span>
               <Image
                 src="/mpower_logo2.png"
-                alt="MPOWER+ — Powering better connection"
+                alt="MPOWER+ sponsor logo — Powering better connection"
                 width={320}
                 height={128}
                 className="h-20 sm:h-24 md:h-28 lg:h-32 xl:h-36 w-auto max-w-[min(280px,85vw)] sm:max-w-none object-contain flex-shrink-0"
@@ -663,7 +682,7 @@ export default function Fantastic4Page() {
             <div className="md:hidden w-full max-w-[min(200px,85vw)] mx-auto flex items-end justify-center overflow-hidden flex-shrink-0 mt-2">
               <Image
                 src="/herbiee_mobile.png"
-                alt=""
+                alt="Fantastic 4 event mascot Herbie — BuildIt Hackathon MUJ"
                 width={480}
                 height={960}
                 className="w-full h-auto max-h-[18vh] object-contain object-bottom drop-shadow-2xl pointer-events-none select-none"
@@ -674,7 +693,7 @@ export default function Fantastic4Page() {
             {/* Desktop: full Herbie — top starts beside button row */}
             <Image
               src="/herbie.png"
-              alt=""
+              alt="Fantastic 4 event mascot Herbie — BuildIt Hackathon MUJ Feb 2026"
               width={480}
               height={480}
               className="hidden md:block w-full h-auto max-h-[85vh] md:max-h-[90vh] object-contain object-left-top drop-shadow-2xl pointer-events-none select-none md:mt-16 lg:mt-20 xl:mt-24"
@@ -688,7 +707,7 @@ export default function Fantastic4Page() {
             <div className="flex-shrink-0 flex items-center justify-center gap-3 sm:gap-4 md:gap-5 lg:gap-6 w-full">
               <Image
                 src="/images/builditlogo.png"
-                alt="Buildit Logo"
+                alt="BuildIt — MUJ Builder Club logo"
                 width={200}
                 height={200}
                 className="h-20 sm:h-24 md:h-28 lg:h-32 xl:h-36 2xl:h-40 w-auto object-contain flex-shrink-0"
@@ -697,7 +716,7 @@ export default function Fantastic4Page() {
               <span className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold flex-shrink-0" style={{ color: "#9daecc" }}>×</span>
               <Image
                 src="/unstop-logo.svg"
-                alt="Unstop Logo"
+                alt="Unstop — Fantastic 4 event partner logo"
                 width={120}
                 height={120}
                 className="h-10 sm:h-11 md:h-12 lg:h-14 xl:h-16 w-auto object-contain flex-shrink-0"
@@ -709,7 +728,9 @@ export default function Fantastic4Page() {
             <div className="flex justify-center mt-2 sm:mt-3 md:mt-4 lg:mt-5 mb-0.5">
               <div className="inline-flex items-center gap-2 md:gap-2.5 px-4 sm:px-5 md:px-6 py-2 md:py-2.5 lg:py-3 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-semibold">
                 <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 md:h-5 md:w-5 lg:h-6 lg:w-6" />
-                <span style={{ fontFamily: '"Audiowide", cursive', color: "#ffffff" }}>6th–7th February 2025</span>
+                <span style={{ fontFamily: '"Audiowide", cursive', color: "#ffffff" }}>
+                  Ideathon: 1–12 Feb • Hackathon: 13–14 Feb
+                </span>
               </div>
             </div>
 
@@ -834,7 +855,7 @@ export default function Fantastic4Page() {
                   </span>
                 </div>
                 <p className="text-xs sm:text-sm leading-relaxed" style={{ color: "#9daecc" }}>
-                  6th–7th Feb. Overnight build: Treasure Hunt, What&apos;s The Word, then intensive development and final pitching.
+                  13th–14th Feb. Overnight build: Treasure Hunt, What&apos;s The Word, then intensive development and final pitching.
                 </p>
               </div>
             </div>
@@ -1256,7 +1277,7 @@ export default function Fantastic4Page() {
                 </div>
                 <div className="mt-4 md:mt-6 text-center">
                   <p className="text-xs md:text-sm lg:text-base text-muted-foreground">
-                    Due by <span className="font-semibold text-white">6th February 2026, 9:00 AM</span>
+                    Due by <span className="font-semibold text-white">12th February 2026, 9:00 AM</span>
                   </p>
                 </div>
               </CardContent>
