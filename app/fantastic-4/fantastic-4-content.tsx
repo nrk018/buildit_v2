@@ -26,8 +26,9 @@ import {
   Presentation,
   Download,
   ArrowRight,
-  Lock,
-  Home
+  Home,
+  FileText,
+  ExternalLink
 } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
@@ -37,6 +38,8 @@ import { cn } from "@/lib/utils"
 import { Fantastic4MobileMenu } from "@/components/fantastic-4-mobile-menu"
 
 const PITCH_DECK_REPO_URL = "https://github.com/nrk018/buildit_presentation"
+const SUBMISSION_FORM_URL = "https://forms.gle/BgdLNgLjVgfaurKK9"
+const STAGE2_TIMELINE_URL = "https://drive.google.com/file/d/1sbkylsI9Vl1G6xmNiAmYP0AQBpsyjbN7/view?usp=sharing"
 
 const bannerMessages = [
   "Important update: Hackathon dates have been shifted to 13–14 February due to logistical reasons.",
@@ -386,7 +389,6 @@ export default function Fantastic4Page() {
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false)
   const [activeSection, setActiveSection] = useState('hero')
   const [isScrolledPastHero, setIsScrolledPastHero] = useState(false)
-  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
   const [showSubmissionNotice, setShowSubmissionNotice] = useState(false)
   const [selectedProblem, setSelectedProblem] = useState<ProblemStatement | null>(null)
   const [mobileProblemIndex, setMobileProblemIndex] = useState(0)
@@ -411,32 +413,6 @@ export default function Fantastic4Page() {
       setMobileProblemIndex((i) => (i + 1) % problemStatements.length)
     }, 5000)
     return () => clearInterval(id)
-  }, [])
-
-  // Countdown timer for Ideathon (pitch deck due 12th February 2026, 9 AM)
-  useEffect(() => {
-    const targetDate = new Date('2026-02-12T09:00:00').getTime()
-    
-    const updateCountdown = () => {
-      const now = new Date().getTime()
-      const difference = targetDate - now
-
-      if (difference > 0) {
-        setTimeLeft({
-          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-          minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
-          seconds: Math.floor((difference % (1000 * 60)) / 1000)
-        })
-      } else {
-        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 })
-      }
-    }
-
-    updateCountdown()
-    const interval = setInterval(updateCountdown, 1000)
-
-    return () => clearInterval(interval)
   }, [])
 
   const handleDownloadPDF = async () => {
@@ -813,7 +789,7 @@ export default function Fantastic4Page() {
               </a>
               <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 flex-shrink-0 rotate-90 sm:rotate-0 hidden sm:block" style={{ color: "#9daecc" }} />
               <a 
-                href="https://docs.google.com/forms/d/e/1FAIpQLScKvdNbf30WiqiZuRj70rXZ95rvPfLZCHrGpIarpsF6w6S4og/viewform"
+                href={SUBMISSION_FORM_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="f4-cta-button w-full sm:w-auto min-h-[44px] sm:min-h-0"
@@ -1218,71 +1194,55 @@ export default function Fantastic4Page() {
                   <p className="text-xs sm:text-xs md:text-base lg:text-lg xl:text-xl font-semibold text-white">Goodies will be provided to the top 3 ideations.</p>
                 </div>
               </div>
-              <button
-                type="button"
-                onClick={() => setShowSubmissionNotice(true)}
-                className="f4-cta-button flex-shrink-0 w-full sm:w-auto mt-2 sm:mt-0"
+              <a
+                href={SUBMISSION_FORM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="f4-cta-button flex-shrink-0 w-full sm:w-auto mt-2 sm:mt-0 inline-flex items-center justify-center"
               >
                 SUBMIT
-              </button>
+              </a>
             </div>
           </div>
         </div>
         </div>
 
-        {/* Stage 2 — CLASSIFIED (locked) */}
+        {/* Stage 2 — Hackathon details now unveiled */}
         <div id="hackathon" className="f4-section f4-section--hackathon relative py-16 md:py-24 px-4 overflow-hidden max-w-full">
           <div className="relative mx-auto max-w-2xl w-full overflow-hidden">
           <div className="text-center mb-6 md:mb-12 pt-8 md:pt-12">
-            <div className="flex items-center justify-center gap-2 md:gap-3 mb-4 md:mb-6">
-              <Lock className="h-6 w-6 md:h-10 md:w-10 flex-shrink-0" style={{ color: "#9daecc" }} />
-              <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold text-white">
-                STAGE 2: HACKATHON
-              </h2>
-            </div>
+            <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 md:mb-6">
+              STAGE 2: HACKATHON
+            </h2>
             <p className="text-sm md:text-lg lg:text-xl text-muted-foreground mb-4 md:mb-8 max-w-3xl mx-auto px-2">
-              Stage 2 (Hackathon) is locked. Focus on the ideathon: build your pitch deck and submit by the deadline below.
+              Hackathon stage 2 details are now unveiled. Check the event flow and timeline below.
             </p>
           </div>
 
-          <Card className="border-2 backdrop-blur-md max-w-2xl mx-auto w-full" style={{ borderColor: "#0e4a80" }}>
-            <CardHeader className="py-4 md:py-8 px-3 md:px-6">
-              <CardTitle className="text-xl md:text-2xl lg:text-3xl mb-4 md:mb-6 text-center">Ideathon Pitch Deck Due In</CardTitle>
-              <CardContent className="px-2 md:px-6">
-                <div className="grid grid-cols-4 gap-2 md:gap-6">
-                  <div className="text-center">
-                    <div className="text-2xl md:text-4xl lg:text-5xl font-bold text-white mb-1 md:mb-2">
-                      {timeLeft.days}
-                    </div>
-                    <div className="text-xs md:text-base text-muted-foreground uppercase">Days</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl md:text-4xl lg:text-5xl font-bold text-white mb-1 md:mb-2">
-                      {timeLeft.hours}
-                    </div>
-                    <div className="text-xs md:text-base text-muted-foreground uppercase">Hours</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl md:text-4xl lg:text-5xl font-bold text-white mb-1 md:mb-2">
-                      {timeLeft.minutes}
-                    </div>
-                    <div className="text-xs md:text-base text-muted-foreground uppercase">Minutes</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl md:text-4xl lg:text-5xl font-bold text-white mb-1 md:mb-2">
-                      {timeLeft.seconds}
-                    </div>
-                    <div className="text-xs md:text-base text-muted-foreground uppercase">Seconds</div>
-                  </div>
-                </div>
-                <div className="mt-4 md:mt-6 text-center">
-                  <p className="text-xs md:text-sm lg:text-base text-muted-foreground">
-                    Due by <span className="font-semibold text-white">12th February 2026, 9:00 AM</span>
-                  </p>
-                </div>
-              </CardContent>
-            </CardHeader>
-          </Card>
+          <a
+            href={STAGE2_TIMELINE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block"
+          >
+            <Card className="border-2 backdrop-blur-md max-w-2xl mx-auto w-full transition-all hover:border-white/80 hover:shadow-xl" style={{ borderColor: "#0e4a80" }}>
+              <CardHeader className="py-4 md:py-8 px-3 md:px-6">
+                <CardTitle className="text-xl md:text-2xl lg:text-3xl mb-2 md:mb-4 text-center flex items-center justify-center gap-2 md:gap-3">
+                  <FileText className="h-6 w-6 md:h-8 md:w-8 flex-shrink-0" style={{ color: "#9daecc" }} />
+                  Event Flow & Timeline
+                </CardTitle>
+                <CardDescription className="text-center text-sm md:text-base">
+                  View the full hackathon schedule and event flow (PDF)
+                </CardDescription>
+                <CardContent className="px-2 md:px-6 pt-2 flex justify-center">
+                  <span className="inline-flex items-center gap-2 text-sm md:text-base font-semibold" style={{ color: "#9daecc" }}>
+                    <ExternalLink className="h-4 w-4 md:h-5 md:w-5" />
+                    Open timeline
+                  </span>
+                </CardContent>
+              </CardHeader>
+            </Card>
+          </a>
         </div>
         </div>
 
